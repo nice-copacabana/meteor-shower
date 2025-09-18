@@ -1,0 +1,10 @@
+{
+  "id": "gemini-basic",
+  "name": "Gemini 基础模板",
+  "version": "0.1.0",
+  "targets": ["gemini"],
+  "variables": {
+    "projectName": "my-project",
+    "persona": "你是一名严谨的全栈工程师，输出遵循项目规范。"
+  }
+}
