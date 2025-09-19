@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-echo "🐳 meteor-shower Docker 容器启动"
-echo "================================="
+echo "🚀 启动 meteor-shower 服务..."
 
 # 启动 Cloud Hub
 echo "☁️  启动 Cloud Hub..."
@@ -10,27 +9,25 @@ cd packages/cloud-hub
 npm start &
 CLOUD_PID=$!
 
-# 启动 UI 控制台
-echo "🖥️  启动 UI 控制台..."
+# 启动 UI Console
+echo "🖥️  启动 UI Console..."
 cd ../ui
 npm start &
 UI_PID=$!
 
-# 启动 RAG 服务器
-echo "🔍 启动 RAG 服务器..."
+# 启动 RAG Server
+echo "🧠 启动 RAG Server..."
 cd ../../examples/rag-server
 npm start &
 RAG_PID=$!
 
-# 等待服务启动
-echo "⏳ 等待服务启动..."
+# 等待所有服务启动
 sleep 5
 
 echo "✅ 所有服务已启动！"
-echo "📊 服务地址:"
-echo "  - Cloud Hub: http://localhost:3000"
-echo "  - UI 控制台: http://localhost:3001"
-echo "  - RAG 服务器: http://localhost:3002"
+echo "Cloud Hub: http://localhost:3000"
+echo "UI Console: http://localhost:3001"
+echo "RAG Server: http://localhost:3002"
 
 # 保持容器运行
-wait
+wait $CLOUD_PID $UI_PID $RAG_PID
