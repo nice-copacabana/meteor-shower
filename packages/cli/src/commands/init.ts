@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
+import { ConfigGenerator } from '../../utils/src/config-generator.js';
 
 export interface InitOptions {
   toolset?: string[];
@@ -29,34 +30,38 @@ export async function initCommand(options: InitOptions = {}) {
     name: 'template',
     message: '选择配置模板:',
     choices: [
-      { name: '基础模板 (推荐)', value: 'basic' },
-      { name: '高级模板 (含 RAG/MCP)', value: 'advanced' },
-      { name: '企业模板 (安全强化)', value: 'enterprise' }
+      { name: '基础模板 (推荐)', value: 'gemini-basic' },
+      { name: 'Claude 基础模板', value: 'claude-basic' },
+      { name: '高级多工具模板', value: 'advanced-multi' }
     ]
   }]);
 
   // 收集变量
   const variables = await collectVariables(template, toolset);
   
+  // 生成配置计划
+  const generator = new ConfigGenerator();
+  const plan = await generator.generateConfig(toolset, template, variables);
+  
   console.log(chalk.green('✅ 初始化完成！'));
   console.log(chalk.gray(`工具集: ${toolset.join(', ')}`));
   console.log(chalk.gray(`模板: ${template}`));
   console.log(chalk.gray(`变量: ${Object.keys(variables).length} 个`));
+  console.log(chalk.gray(`操作: ${plan.operations.length} 个`));
   
-  return { toolset, template, variables };
+  return plan;
 }
 
 async function collectVariables(template: string, toolset: string[]) {
   const variables: Record<string, unknown> = {};
   
-  if (template === 'basic') {
-    const { projectName, persona } = await inquirer.prompt([
-      { type: 'input', name: 'projectName', message: '项目名称:', default: 'my-project' },
-      { type: 'input', name: 'persona', message: 'AI 角色描述:', default: '你是一名严谨的全栈工程师' }
-    ]);
-    variables.projectName = projectName;
-    variables.persona = persona;
-  }
+  const { projectName, persona } = await inquirer.prompt([
+    { type: 'input', name: 'projectName', message: '项目名称:', default: 'my-project' },
+    { type: 'input', name: 'persona', message: 'AI 角色描述:', default: '你是一名严谨的全栈工程师' }
+  ]);
+  
+  variables.projectName = projectName;
+  variables.persona = persona;
   
   return variables;
 }

@@ -1,27 +1,25 @@
 import chalk from 'chalk';
-import { DiffResult } from '../../adapters/src/index.js';
+import { ConfigGenerator } from '../../utils/src/config-generator.js';
 
 export async function diffCommand() {
   console.log(chalk.cyan('🔍 分析配置差异...'));
   
-  // 模拟差异分析
-  const mockDiff: DiffResult = {
-    changes: [
-      { path: '~/.gemini/GEMINI.md', kind: 'create' },
-      { path: '~/.claude/claude.json', kind: 'update' },
-      { path: './.gemini/settings.json', kind: 'create' }
-    ],
-    summary: '将创建 2 个新文件，更新 1 个现有文件'
-  };
+  // 模拟配置生成
+  const generator = new ConfigGenerator();
+  const plan = await generator.generateConfig(
+    ['gemini', 'claude'],
+    'gemini-basic',
+    { projectName: 'demo', persona: '测试工程师' }
+  );
   
   console.log(chalk.yellow('📋 变更摘要:'));
-  console.log(chalk.gray(mockDiff.summary));
+  console.log(chalk.gray(`将创建 ${plan.operations.length} 个配置文件`));
   
   console.log(chalk.yellow('\n📁 文件变更:'));
-  mockDiff.changes.forEach(change => {
-    const icon = change.kind === 'create' ? '➕' : change.kind === 'update' ? '🔄' : '❌';
-    const color = change.kind === 'create' ? 'green' : change.kind === 'update' ? 'yellow' : 'red';
-    console.log(chalk[color](`${icon} ${change.path}`));
+  plan.operations.forEach(op => {
+    const icon = op.kind === 'create' ? '➕' : op.kind === 'update' ? '🔄' : '❌';
+    const color = op.kind === 'create' ? 'green' : op.kind === 'update' ? 'yellow' : 'red';
+    console.log(chalk[color](`${icon} ${op.path} (${op.target})`));
   });
   
   console.log(chalk.gray('\n💡 使用 ms apply 应用这些变更'));
