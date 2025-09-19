@@ -28,7 +28,7 @@ export class TemplateEngine {
   async loadTemplate(templateId: string): Promise<TemplateMetadata> {
     const templatePath = path.join(process.cwd(), `packages/templates/samples/${templateId}.json`);
     const content = await fs.readFile(templatePath, 'utf-8');
-    const template = JSON.parse(content);
+    const template = JSON.parse(content) as TemplateMetadata;
     
     // 验证模板格式
     const validate = this.ajv.compile(this.schema);

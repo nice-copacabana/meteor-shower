@@ -117,7 +117,10 @@ export class PluginManager {
     for (const hook of enabledHooks) {
       try {
         result = await hook.handler({ ...context, data: result });
-        console.log(chalk.gray(`🔗 钩子执行: ${hookName} -> ${plugin?.name}`));
+        const plugin = Array.from(this.plugins.values()).find(p => 
+          p.hooks.some(h => h.handler === hook.handler)
+        );
+        console.log(chalk.gray(`🔗 钩子执行: ${hookName} -> ${plugin?.name || 'unknown'}`));
       } catch (error) {
         console.error(chalk.red(`❌ 钩子执行失败: ${hookName}`), error);
       }

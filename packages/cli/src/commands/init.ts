@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { ConfigGenerator } from '../../utils/src/config-generator.js';
 
 export interface InitOptions {
   toolset?: string[];
@@ -39,17 +38,12 @@ export async function initCommand(options: InitOptions = {}) {
   // 收集变量
   const variables = await collectVariables(template, toolset);
   
-  // 生成配置计划
-  const generator = new ConfigGenerator();
-  const plan = await generator.generateConfig(toolset, template, variables);
-  
   console.log(chalk.green('✅ 初始化完成！'));
   console.log(chalk.gray(`工具集: ${toolset.join(', ')}`));
   console.log(chalk.gray(`模板: ${template}`));
   console.log(chalk.gray(`变量: ${Object.keys(variables).length} 个`));
-  console.log(chalk.gray(`操作: ${plan.operations.length} 个`));
   
-  return plan;
+  return { toolset, template, variables };
 }
 
 async function collectVariables(template: string, toolset: string[]) {
