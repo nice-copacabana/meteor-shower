@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meteor-shower 监控仪表板</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metric { text-align: center; }
+        .metric-value { font-size: 2em; font-weight: bold; margin: 10px 0; }
+        .metric-label { color: #666; font-size: 0.9em; }
+        .status-ok { color: #28a745; }
+        .status-warning { color: #ffc107; }
+        .status-error { color: #dc3545; }
+        .chart-container { position: relative; height: 300px; }
+        .alert { padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .alert-warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .refresh-btn { background: #007acc; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 meteor-shower 监控仪表板</h1>
+            <p>实时监控系统状态、性能指标和告警信息</p>
+            <button class="refresh-btn" onclick="refreshData()">🔄 刷新数据</button>
+        </div>
+
+        <div class="grid">
+            <div class="card metric">
+                <div class="metric-label">系统状态</div>
+                <div class="metric-value status-ok" id="systemStatus">健康</div>
+            </div>
+            <div class="card metric">
+                <div class="metric-label">活跃用户</div>
+                <div class="metric-value" id="activeUsers">0</div>
+            </div>
+            <div class="card metric">
+                <div class="metric-label">配置应用次数</div>
+                <div class="metric-value" id="configApplied">0</div>
+            </div>
+            <div class="card metric">
+                <div class="metric-label">模板使用次数</div>
+                <div class="metric-value" id="templatesUsed">0</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>📈 性能趋势</h3>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🔧 服务状态</h3>
+                <div id="serviceStatus">
+                    <div>Cloud Hub: <span class="status-ok">在线</span></div>
+                    <div>UI 控制台: <span class="status-ok">在线</span></div>
+                    <div>RAG 服务器: <span class="status-warning">降级</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🚨 告警信息</h3>
+            <div id="alerts">
+                <div class="alert alert-warning">
+                    RAG 服务器响应时间超过 5 秒
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📋 最近活动</h3>
+            <div id="recentActivity">
+                <div>用户 admin 应用了 Gemini 配置</div>
+                <div>用户 user1 创建了新模板</div>
+                <div>系统自动备份了配置文件</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let performanceChart;
+
+        function initChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            performanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: '响应时间 (ms)',
+                        data: [120, 150, 180, 200, 160, 140],
+                        borderColor: '#007acc',
+                        backgroundColor: 'rgba(0, 122, 204, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function refreshData() {
+            // 模拟数据刷新
+            document.getElementById('activeUsers').textContent = Math.floor(Math.random() * 100);
+            document.getElementById('configApplied').textContent = Math.floor(Math.random() * 1000);
+            document.getElementById('templatesUsed').textContent = Math.floor(Math.random() * 500);
+            
+            // 更新图表数据
+            if (performanceChart) {
+                performanceChart.data.datasets[0].data = Array.from({length: 6}, () => Math.floor(Math.random() * 200) + 100);
+                performanceChart.update();
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initChart();
+            refreshData();
+            
+            // 每 30 秒自动刷新
+            setInterval(refreshData, 30000);
+        });
+    </script>
+</body>
+</html>

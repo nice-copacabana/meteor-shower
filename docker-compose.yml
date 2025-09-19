@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  meteor-shower:
+    build: .
+    ports:
+      - "3000:3000"  # Cloud Hub
+      - "3001:3001"  # UI 控制台
+      - "3002:3002"  # RAG 服务器
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - UI_PORT=3001
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 可选：PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: meteor_shower
+      POSTGRES_USER: meteor
+      POSTGRES_PASSWORD: meteor123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
