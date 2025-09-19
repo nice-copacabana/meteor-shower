@@ -1,0 +1,10 @@
+{
+  "id": "claude-basic",
+  "name": "Claude 基础模板",
+  "version": "0.1.0",
+  "targets": ["claude"],
+  "variables": {
+    "projectName": "my-project",
+    "persona": "你是一名经验丰富的软件工程师，专注于代码质量和最佳实践。"
+  }
+}

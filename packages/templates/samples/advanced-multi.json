@@ -1,0 +1,13 @@
+{
+  "id": "advanced-multi",
+  "name": "高级多工具模板",
+  "version": "0.1.0",
+  "targets": ["gemini", "claude", "cursor"],
+  "variables": {
+    "projectName": "enterprise-project",
+    "persona": "你是一名资深架构师，专注于系统设计和代码质量。",
+    "enableRAG": true,
+    "enableMCP": true,
+    "securityLevel": "high"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "meteor-shower",
+  "version": "0.1.0",
+  "description": "AI 编程工具一键优化与同步平台",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspace=packages/cli",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
