@@ -1,18 +1,38 @@
-import { Command } from 'commander';
-import chalk from 'chalk';
-import { initCommand } from './commands/init.js';
-import { diffCommand } from './commands/diff.js';
-import { applyCommand } from './commands/apply.js';
-import { shareCommand } from './commands/share.js';
-import { mcpTestCommand } from './commands/mcp.js';
+/**
+ * Meteor Shower CLI - AI 编程工具一键优化与同步平台
+ *
+ * 核心功能：
+ * - init: 工具集配置与模板选择
+ * - diff: 环境差异对比分析
+ * - apply: 配置应用与回滚支持
+ * - share: 项目规则模板化打包
+ * - mcp: MCP协议服务测试
+ */
 
+// 导入核心依赖
+import { Command } from 'commander';      // 命令行框架
+import chalk from 'chalk';                 // 终端颜色美化
+import { initCommand } from './commands/init.js';     // 初始化命令
+import { diffCommand } from './commands/diff.js';     // 差异对比命令
+import { applyCommand } from './commands/apply.js';    // 配置应用命令
+import { shareCommand } from './commands/share.js';    // 模板分享命令
+import { mcpTestCommand } from './commands/mcp.js';     // MCP服务测试命令
+
+// 创建命令行程序实例
 const program = new Command();
 
+// 配置CLI程序基本信息
 program
-  .name('ms')
+  .name('ms')                                    // 命令名称
   .description('meteor-shower: 一键优化与同步 AI 编程工具的 CLI')
-  .version('0.1.0');
+  .version('0.1.0');                             // 版本号
 
+// ========== 命令定义 ==========
+
+/**
+ * 初始化命令：工具集选择与配置模板生成
+ * 流程：选择AI工具 -> 加载对应模板 -> 生成应用计划
+ */
 program
   .command('init')
   .description('初始化：选择工具集与模板，生成应用计划')
@@ -25,6 +45,10 @@ program
     }
   });
 
+/**
+ * 差异对比命令：分析渲染结果与当前环境差异
+ * 功能：对比模板渲染结果与实际配置，识别需要修改的部分
+ */
 program
   .command('diff')
   .description('对比渲染结果与当前环境差异')
@@ -37,9 +61,15 @@ program
     }
   });
 
+/**
+ * 配置应用命令：执行配置修改并支持回滚
+ * 选项：
+ * - -y, --yes: 跳过确认步骤，直接应用
+ * 安全特性：支持回滚机制，失败时可恢复
+ */
 program
   .command('apply')
-  .option('-y, --yes', '跳过确认')
+  .option('-y, --yes', '跳过确认')              // 跳过用户确认选项
   .description('应用配置并支持回滚')
   .action(async (options) => {
     try {
@@ -50,6 +80,10 @@ program
     }
   });
 
+/**
+ * 模板分享命令：将当前项目配置打包为可复用的模板
+ * 用途：将成功配置的项目经验打包分享到云端
+ */
 program
   .command('share')
   .description('将当前项目规则打包为模板')
@@ -62,6 +96,10 @@ program
     }
   });
 
+/**
+ * MCP服务测试命令：检测MCP（Model Context Protocol）服务可用性
+ * 功能：验证MCP服务器连接状态和服务健康度
+ */
 program
   .command('mcp')
   .description('MCP 工具集')

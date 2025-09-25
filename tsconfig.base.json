@@ -1,12 +1,29 @@
 {
+  // TypeScript编译器基础配置
+  // 作为所有工作空间的共享配置基线
   "compilerOptions": {
+    // 编译目标：ES2020
     "target": "ES2020",
+
+    // 模块系统：ES2020，支持动态导入和模块热替换
     "module": "ES2020",
+
+    // 模块解析策略：Node.js风格的模块解析
     "moduleResolution": "node",
+
+    // 启用ES模块互操作性，允许CommonJS和ES模块混用
     "esModuleInterop": true,
+
+    // 强制文件名大小写一致性，避免跨平台问题
     "forceConsistentCasingInFileNames": true,
+
+    // 跳过库文件类型检查，提高编译速度
     "skipLibCheck": true,
+
+    // 允许导入JSON模块
     "resolveJsonModule": true,
+
+    // 启用严格类型检查模式
     "strict": true
   }
 }
