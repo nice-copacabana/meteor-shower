@@ -3,196 +3,939 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>meteor-shower 控制台</title>
+    <title>🚀 meteor-shower 控制台</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .btn { background: #007acc; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; }
-        .btn:hover { background: #005a9e; }
-        .btn-success { background: #28a745; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #28a745; color: white; }
         .btn-warning { background: #ffc107; color: #212529; }
-        .btn-danger { background: #dc3545; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
-        .checkbox-item { display: flex; align-items: center; }
-        .status { padding: 10px; border-radius: 4px; margin: 10px 0; }
-        .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .status.warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
-        .log { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 4px; padding: 15px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-info { background: #17a2b8; color: white; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .checkbox-item:hover { background: #e9ecef; }
+        .checkbox-item input[type="checkbox"] { margin-right: 10px; }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status.success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.warning {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status.info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
         .hidden { display: none; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .file-tree {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .file-item:hover { background: #e9ecef; }
+        .file-icon {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number { font-size: 2em; font-weight: bold; }
+        .stat-label { font-size: 0.9em; opacity: 0.9; }
+        .template-card {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            transition: all 0.2s;
+        }
+        .template-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .rating {
+            color: #ffc107;
+            margin: 5px 0;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .checkbox-group { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 meteor-shower 控制台</h1>
+            <h1><i class="fas fa-meteor"></i> meteor-shower 控制台</h1>
             <p>AI 编程工具一键优化与同步平台</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalTemplates">0</div>
+                    <div class="stat-label">可用模板</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDownloads">0</div>
+                    <div class="stat-label">总下载数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="averageRating">0.0</div>
+                    <div class="stat-label">平均评分</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeTools">4</div>
+                    <div class="stat-label">支持工具</div>
+                </div>
+            </div>
         </div>
 
-        <div class="grid">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('config')">
+                <i class="fas fa-cog"></i> 配置管理
+            </button>
+            <button class="tab-btn" onclick="switchTab('templates')">
+                <i class="fas fa-box"></i> 模板市场
+            </button>
+            <button class="tab-btn" onclick="switchTab('monitor')">
+                <i class="fas fa-chart-line"></i> 系统监控
+            </button>
+            <button class="tab-btn" onclick="switchTab('logs')">
+                <i class="fas fa-terminal"></i> 操作日志
+            </button>
+        </div>
+
+        <!-- 配置管理标签页 -->
+        <div id="configTab" class="tab-content active">
+            <div class="grid">
+                <div class="card">
+                    <h2><i class="fas fa-tools"></i> 工具选择</h2>
+                    <div class="form-group">
+                        <label>选择要配置的 AI 工具:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="gemini" checked>
+                                <i class="fas fa-robot file-icon" style="color: #4285f4;"></i>
+                                <label for="gemini">Gemini CLI</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="claude" checked>
+                                <i class="fas fa-brain file-icon" style="color: #ff6b35;"></i>
+                                <label for="claude">Claude Code</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cursor">
+                                <i class="fas fa-code file-icon" style="color: #007acc;"></i>
+                                <label for="cursor">Cursor</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="openai">
+                                <i class="fas fa-cog file-icon" style="color: #10a37f;"></i>
+                                <label for="openai">OpenAI/通用</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="template"><i class="fas fa-palette"></i> 配置模板:</label>
+                        <select id="template" class="form-control">
+                            <option value="gemini-basic">🔷 Gemini 基础模板</option>
+                            <option value="claude-basic">🧠 Claude 基础模板</option>
+                            <option value="advanced-multi">⚡ 高级多工具模板</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectName"><i class="fas fa-folder"></i> 项目名称:</label>
+                        <input type="text" id="projectName" class="form-control" value="my-awesome-project">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="persona"><i class="fas fa-user-tie"></i> AI 角色描述:</label>
+                        <textarea id="persona" class="form-control" rows="3">你是一名经验丰富的高级全栈工程师，专注于代码质量、可维护性和最佳实践。你的目标是编写清晰、可读、可测试的代码，并确保系统具有良好的架构设计。</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <small id="progressText">准备就绪</small>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="generateConfig()">
+                            <i class="fas fa-magic"></i> 生成配置
+                        </button>
+                        <button class="btn btn-success" onclick="applyConfig()">
+                            <i class="fas fa-rocket"></i> 应用配置
+                        </button>
+                        <button class="btn btn-info" onclick="previewConfig()">
+                            <i class="fas fa-eye"></i> 预览配置
+                        </button>
+                        <button class="btn btn-warning" onclick="exportConfig()">
+                            <i class="fas fa-download"></i> 导出配置
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-heartbeat"></i> 系统状态</h2>
+                    <div id="status" class="status info">
+                        <i class="fas fa-info-circle"></i> 系统已就绪
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-plug"></i> MCP 服务状态:</label>
+                        <div id="mcpStatus">
+                            <div class="status success" style="padding: 8px; margin: 5px 0;">
+                                <i class="fas fa-check-circle"></i> GitHub MCP (localhost:3001) - 响应正常
+                            </div>
+                            <div class="status success" style="padding: 8px; margin: 5px 0;">
+                                <i class="fas fa-check-circle"></i> Vector RAG (localhost:3002) - 响应正常
+                            </div>
+                            <div class="status warning" style="padding: 8px; margin: 5px 0;">
+                                <i class="fas fa-exclamation-triangle"></i> Local Tools (localhost:3003) - 离线
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="checkSystemStatus()">
+                        <i class="fas fa-sync-alt"></i> 刷新状态
+                    </button>
+                </div>
+            </div>
+
             <div class="card">
-                <h2>🔧 工具配置</h2>
-                <div class="form-group">
-                    <label>选择 AI 工具:</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="gemini" checked>
-                            <label for="gemini">Gemini CLI</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="claude" checked>
-                            <label for="claude">Claude Code</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="cursor">
-                            <label for="cursor">Cursor</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="openai">
-                            <label for="openai">OpenAI/通用</label>
+                <h2><i class="fas fa-file-code"></i> 配置详情</h2>
+                <div id="configDetails">
+                    <div class="file-tree">
+                        <div class="file-item">
+                            <i class="fas fa-folder file-icon"></i>
+                            <span>暂无配置，请先生成配置</span>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>配置模板:</label>
-                    <select id="template">
-                        <option value="basic">基础模板</option>
-                        <option value="advanced">高级模板</option>
-                        <option value="enterprise">企业模板</option>
+            </div>
+        </div>
+
+        <!-- 模板市场标签页 -->
+        <div id="templatesTab" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-box-open"></i> 模板市场</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="loadTemplates()">
+                        <i class="fas fa-sync-alt"></i> 刷新模板
+                    </button>
+                    <button class="btn btn-success" onclick="uploadTemplate()">
+                        <i class="fas fa-upload"></i> 上传模板
+                    </button>
+                    <div style="flex: 1;"></div>
+                    <input type="text" id="templateSearch" class="form-control" placeholder="搜索模板..." style="max-width: 300px;">
+                </div>
+
+                <div id="templatesList">
+                    <div class="status info">
+                        <i class="fas fa-spinner fa-spin"></i> 正在加载模板...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统监控标签页 -->
+        <div id="monitorTab" class="tab-content">
+            <div class="grid">
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> 性能指标</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="cpuUsage">--</div>
+                            <div class="stat-label">CPU 使用率</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="memoryUsage">--</div>
+                            <div class="stat-label">内存使用率</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="diskUsage">--</div>
+                            <div class="stat-label">磁盘使用率</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="networkLatency">--</div>
+                            <div class="stat-label">网络延迟</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-server"></i> 服务状态</h2>
+                    <div id="serviceStatus">
+                        <div class="status success">
+                            <i class="fas fa-check-circle"></i> meteor-shower CLI - 运行中
+                        </div>
+                        <div class="status success">
+                            <i class="fas fa-check-circle"></i> Cloud Hub - 运行中
+                        </div>
+                        <div class="status success">
+                            <i class="fas fa-check-circle"></i> Template Engine - 运行中
+                        </div>
+                        <div class="status warning">
+                            <i class="fas fa-exclamation-triangle"></i> File Operations - 警告
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作日志标签页 -->
+        <div id="logsTab" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-terminal"></i> 操作日志</h2>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-warning" onclick="clearLogs()">
+                        <i class="fas fa-trash"></i> 清空日志
+                    </button>
+                    <button class="btn btn-info" onclick="exportLogs()">
+                        <i class="fas fa-download"></i> 导出日志
+                    </button>
+                    <div style="flex: 1;"></div>
+                    <select id="logLevel" class="form-control" style="max-width: 150px;">
+                        <option value="all">全部日志</option>
+                        <option value="info">信息</option>
+                        <option value="success">成功</option>
+                        <option value="warning">警告</option>
+                        <option value="error">错误</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>项目名称:</label>
-                    <input type="text" id="projectName" value="my-project">
-                </div>
-                <div class="form-group">
-                    <label>AI 角色描述:</label>
-                    <textarea id="persona" rows="3">你是一名严谨的全栈工程师，专注于代码质量和最佳实践。</textarea>
-                </div>
-                <button class="btn" onclick="generateConfig()">🔍 生成配置</button>
-                <button class="btn btn-success" onclick="applyConfig()">⚡ 应用配置</button>
-            </div>
-
-            <div class="card">
-                <h2>📊 状态监控</h2>
-                <div id="status" class="status success">就绪</div>
-                <div class="form-group">
-                    <label>MCP 服务状态:</label>
-                    <div id="mcpStatus">检查中...</div>
-                </div>
-                <button class="btn" onclick="checkMCP()">🔧 检查 MCP 服务</button>
-                <button class="btn btn-warning" onclick="viewLogs()">📋 查看日志</button>
+                <div id="logs" class="log"></div>
             </div>
         </div>
+    </div>
 
-        <div class="card">
-            <h2>📋 配置预览</h2>
-            <div id="configPreview" class="log">点击"生成配置"查看预览...</div>
-        </div>
-
-        <div class="card hidden" id="logsPanel">
-            <h2>📋 操作日志</h2>
-            <div id="logs" class="log"></div>
-            <button class="btn" onclick="clearLogs()">🗑️ 清空日志</button>
+    <!-- 模态框 -->
+    <div id="modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+        <div style="background: white; border-radius: 16px; padding: 30px; max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <h3 id="modalTitle">模态框标题</h3>
+            <div id="modalContent">模态框内容</div>
+            <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end;">
+                <button class="btn btn-danger" onclick="closeModal()">关闭</button>
+            </div>
         </div>
     </div>
 
     <script>
         let currentConfig = null;
         let logs = [];
+        let templates = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 meteor-shower 控制台已启动', 'info');
+            loadTemplates();
+            updateSystemStats();
+            setInterval(updateSystemStats, 5000);
+        });
+
+        function switchTab(tabName) {
+            // 隐藏所有标签页
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 显示选中的标签页
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+
+            log(`切换到 ${tabName} 标签页`, 'info');
+        }
 
         function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            logs.push(`[${timestamp}] ${message}`);
+            const timestamp = new Date().toLocaleString();
+            const logEntry = {
+                timestamp,
+                message,
+                type
+            };
+            logs.push(logEntry);
             updateLogsDisplay();
+
+            // 同时输出到控制台
+            console.log(`[${type.toUpperCase()}] ${message}`);
         }
 
         function updateLogsDisplay() {
-            document.getElementById('logs').textContent = logs.join('\n');
+            const logsContainer = document.getElementById('logs');
+            const logLevel = document.getElementById('logLevel').value;
+
+            let filteredLogs = logs;
+            if (logLevel !== 'all') {
+                filteredLogs = logs.filter(log => log.type === logLevel);
+            }
+
+            logsContainer.innerHTML = filteredLogs.map(log => {
+                const icons = {
+                    info: 'ℹ️',
+                    success: '✅',
+                    warning: '⚠️',
+                    error: '❌'
+                };
+                const colors = {
+                    info: '#17a2b8',
+                    success: '#28a745',
+                    warning: '#ffc107',
+                    error: '#dc3545'
+                };
+
+                return `<div style="color: ${colors[log.type] || '#666'}; border-bottom: 1px solid #333; padding: 5px 0;">
+                    <span>${icons[log.type] || '📝'}</span>
+                    <span style="color: #999; margin: 0 10px;">${log.timestamp}</span>
+                    <span>${log.message}</span>
+                </div>`;
+            }).join('');
+            logsContainer.scrollTop = logsContainer.scrollHeight;
         }
 
-        function generateConfig() {
-            log('开始生成配置...', 'info');
-            
+        async function generateConfig() {
+            log('🔄 开始生成配置...', 'info');
+
             const tools = [];
             if (document.getElementById('gemini').checked) tools.push('gemini');
             if (document.getElementById('claude').checked) tools.push('claude');
             if (document.getElementById('cursor').checked) tools.push('cursor');
             if (document.getElementById('openai').checked) tools.push('openai');
 
+            if (tools.length === 0) {
+                alert('请至少选择一个工具');
+                return;
+            }
+
             const template = document.getElementById('template').value;
             const projectName = document.getElementById('projectName').value;
             const persona = document.getElementById('persona').value;
 
-            // 模拟配置生成
-            currentConfig = {
-                tools,
-                template,
-                projectName,
-                persona,
-                operations: [
-                    { target: 'gemini', path: '~/.gemini/GEMINI.md', kind: 'create' },
-                    { target: 'claude', path: '~/.claude/claude.json', kind: 'create' },
-                    { target: 'cursor', path: './.cursor/rules.txt', kind: 'create' }
-                ]
-            };
+            // 更新进度
+            updateProgress(0, '准备生成配置...');
 
-            // 显示配置预览
-            document.getElementById('configPreview').textContent = JSON.stringify(currentConfig, null, 2);
-            document.getElementById('status').textContent = '配置已生成，可以应用';
-            document.getElementById('status').className = 'status success';
+            try {
+                const response = await fetch('/api/generate-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tools,
+                        template,
+                        projectName,
+                        persona
+                    })
+                });
 
-            log(`配置生成完成: ${tools.length} 个工具, ${currentConfig.operations.length} 个操作`, 'success');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    currentConfig = result.config;
+                    updateProgress(100, '配置生成完成');
+                    displayConfigDetails(result.config);
+                    log(`✅ 配置生成成功: ${tools.length} 个工具, ${result.config.operations.length} 个操作`, 'success');
+                } else {
+                    throw new Error(result.error || '配置生成失败');
+                }
+            } catch (error) {
+                updateProgress(0, '配置生成失败');
+                log(`❌ 配置生成失败: ${error.message}`, 'error');
+                alert(`配置生成失败: ${error.message}`);
+            }
         }
 
-        function applyConfig() {
+        function updateProgress(percent, text) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = text;
+        }
+
+        function displayConfigDetails(config) {
+            const container = document.getElementById('configDetails');
+
+            const filesHtml = config.operations.map((op, index) => {
+                const icons = {
+                    create: '➕',
+                    update: '🔄',
+                    delete: '❌'
+                };
+                const colors = {
+                    create: '#28a745',
+                    update: '#ffc107',
+                    delete: '#dc3545'
+                };
+
+                return `
+                    <div class="file-item" onclick="openFile('${op.path}')">
+                        <i class="fas fa-file-code file-icon" style="color: ${colors[op.kind]}"></i>
+                        <div>
+                            <div style="font-weight: 500;">${op.path}</div>
+                            <div style="font-size: 12px; color: #666;">
+                                ${icons[op.kind]} ${op.kind} | ${op.target}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="file-tree">
+                    <div style="margin-bottom: 10px; color: #666;">
+                        <strong>项目:</strong> ${config.projectName}<br>
+                        <strong>工具:</strong> ${config.tools.join(', ')}<br>
+                        <strong>文件数:</strong> ${config.operations.length}
+                    </div>
+                    ${filesHtml}
+                </div>
+            `;
+        }
+
+        async function applyConfig() {
             if (!currentConfig) {
                 alert('请先生成配置');
                 return;
             }
 
-            log('开始应用配置...', 'info');
-            document.getElementById('status').textContent = '正在应用配置...';
-            document.getElementById('status').className = 'status warning';
+            log('🚀 开始应用配置...', 'info');
 
-            // 模拟应用过程
+            if (!confirm(`确定要应用配置吗？\n\n项目: ${currentConfig.projectName}\n工具: ${currentConfig.tools.join(', ')}\n文件: ${currentConfig.operations.length} 个`)) {
+                log('❌ 用户取消配置应用', 'warning');
+                return;
+            }
+
+            updateProgress(0, '开始应用配置...');
+
+            try {
+                const response = await fetch('/api/apply-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        config: currentConfig,
+                        dryRun: false
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    updateProgress(100, '配置应用完成');
+                    document.getElementById('status').innerHTML = '<i class="fas fa-check-circle"></i> 配置应用成功！';
+                    document.getElementById('status').className = 'status success';
+                    log('✅ 配置应用成功', 'success');
+
+                    // 提供打开文件的选项
+                    if (confirm('配置应用成功！是否要打开生成的文件？')) {
+                        openGeneratedFiles(currentConfig.operations);
+                    }
+                } else {
+                    throw new Error(result.error || '配置应用失败');
+                }
+            } catch (error) {
+                updateProgress(0, '配置应用失败');
+                document.getElementById('status').innerHTML = '<i class="fas fa-exclamation-triangle"></i> 配置应用失败';
+                document.getElementById('status').className = 'status error';
+                log(`❌ 配置应用失败: ${error.message}`, 'error');
+                alert(`配置应用失败: ${error.message}`);
+            }
+        }
+
+        function openFile(filePath) {
+            log(`📂 尝试打开文件: ${filePath}`, 'info');
+
+            // 这里可以实现文件的快速打开功能
+            fetch('/api/open-file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ path: filePath })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    log(`✅ 文件已打开: ${filePath}`, 'success');
+                } else {
+                    log(`⚠️ 无法打开文件: ${filePath} - ${result.error}`, 'warning');
+                }
+            })
+            .catch(error => {
+                log(`❌ 打开文件失败: ${error.message}`, 'error');
+            });
+        }
+
+        function openGeneratedFiles(operations) {
+            operations.forEach(op => {
+                if (op.kind !== 'delete') {
+                    setTimeout(() => openFile(op.path), 1000);
+                }
+            });
+        }
+
+        async function loadTemplates() {
+            log('📦 正在加载模板列表...', 'info');
+
+            try {
+                const response = await fetch('/api/v1/templates');
+                const result = await response.json();
+
+                if (result.success) {
+                    templates = result.data;
+                    displayTemplates(result.data);
+                    updateSystemStats();
+
+                    log(`✅ 加载了 ${result.data.length} 个模板`, 'success');
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                log(`❌ 加载模板失败: ${error.message}`, 'error');
+                document.getElementById('templatesList').innerHTML = `
+                    <div class="status error">
+                        <i class="fas fa-exclamation-triangle"></i> 加载模板失败: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function displayTemplates(templates) {
+            const container = document.getElementById('templatesList');
+
+            if (templates.length === 0) {
+                container.innerHTML = `
+                    <div class="status warning">
+                        <i class="fas fa-inbox"></i> 暂无可用模板
+                    </div>
+                `;
+                return;
+            }
+
+            const templatesHtml = templates.map(template => `
+                <div class="template-card">
+                    <div style="display: flex; justify-content: between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h4>${template.name}</h4>
+                            <p style="color: #666; margin: 5px 0;">${template.description || '无描述'}</p>
+                            <div style="display: flex; gap: 15px; margin: 10px 0;">
+                                <span><i class="fas fa-tag"></i> ${template.targets.join(', ')}</span>
+                                <span><i class="fas fa-user"></i> ${template.author || '匿名'}</span>
+                                <span><i class="fas fa-calendar"></i> ${new Date(template.created).toLocaleDateString()}</span>
+                            </div>
+                            <div class="rating">
+                                ${'⭐'.repeat(Math.round(template.rating || 0))}
+                                ${template.rating || 0} (${template.downloadCount || 0} 下载)
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn btn-primary" onclick="downloadTemplate('${template.id}')">
+                                <i class="fas fa-download"></i> 下载
+                            </button>
+                            <button class="btn btn-info" onclick="previewTemplate('${template.id}')">
+                                <i class="fas fa-eye"></i> 预览
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = templatesHtml;
+        }
+
+        async function downloadTemplate(templateId) {
+            log(`📥 正在下载模板: ${templateId}`, 'info');
+
+            try {
+                const response = await fetch(`/api/v1/templates/${templateId}/download`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    log(`✅ 模板下载成功: ${templateId}`, 'success');
+                    alert('模板下载成功！');
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                log(`❌ 模板下载失败: ${error.message}`, 'error');
+                alert(`模板下载失败: ${error.message}`);
+            }
+        }
+
+        function previewConfig() {
+            if (!currentConfig) {
+                alert('请先生成配置');
+                return;
+            }
+
+            showModal('配置预览', `<pre>${JSON.stringify(currentConfig, null, 2)}</pre>`);
+        }
+
+        function exportConfig() {
+            if (!currentConfig) {
+                alert('请先生成配置');
+                return;
+            }
+
+            const dataStr = JSON.stringify(currentConfig, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `${currentConfig.projectName}-config.json`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+
+            log(`📤 配置已导出: ${exportFileDefaultName}`, 'success');
+        }
+
+        function updateSystemStats() {
+            // 模拟系统统计数据更新
+            document.getElementById('cpuUsage').textContent = Math.floor(Math.random() * 30 + 20) + '%';
+            document.getElementById('memoryUsage').textContent = Math.floor(Math.random() * 40 + 30) + '%';
+            document.getElementById('diskUsage').textContent = Math.floor(Math.random() * 20 + 60) + '%';
+            document.getElementById('networkLatency').textContent = Math.floor(Math.random() * 50 + 10) + 'ms';
+        }
+
+        function checkSystemStatus() {
+            log('🔍 检查系统状态...', 'info');
+
+            // 模拟系统状态检查
             setTimeout(() => {
-                document.getElementById('status').textContent = '配置应用成功！';
+                log('✅ 系统状态检查完成', 'success');
+                document.getElementById('status').innerHTML = '<i class="fas fa-check-circle"></i> 所有系统正常';
                 document.getElementById('status').className = 'status success';
-                log('配置应用成功', 'success');
-            }, 2000);
-        }
-
-        function checkMCP() {
-            log('检查 MCP 服务...', 'info');
-            document.getElementById('mcpStatus').innerHTML = `
-                <div>✅ GitHub MCP (localhost:3001) - 12ms</div>
-                <div>✅ Vector RAG (localhost:3002) - 8ms</div>
-                <div>❌ Local Tools (localhost:3003) - 离线</div>
-            `;
-            log('MCP 服务检查完成', 'success');
-        }
-
-        function viewLogs() {
-            document.getElementById('logsPanel').classList.remove('hidden');
+            }, 1000);
         }
 
         function clearLogs() {
             logs = [];
             updateLogsDisplay();
+            log('🗑️ 日志已清空', 'info');
         }
 
-        // 初始化
-        log('meteor-shower 控制台已启动', 'info');
-        checkMCP();
+        function exportLogs() {
+            const dataStr = logs.map(log => `[${log.type.toUpperCase()}] ${log.timestamp} - ${log.message}`).join('\n');
+            const dataUri = 'data:text/plain;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `meteor-shower-logs-${new Date().toISOString().split('T')[0]}.txt`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+
+            log(`📤 日志已导出: ${exportFileDefaultName}`, 'success');
+        }
+
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // 搜索模板功能
+        document.getElementById('templateSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredTemplates = templates.filter(template =>
+                template.name.toLowerCase().includes(searchTerm) ||
+                template.description?.toLowerCase().includes(searchTerm) ||
+                template.author?.toLowerCase().includes(searchTerm)
+            );
+            displayTemplates(filteredTemplates);
+        });
+
+        // 定期更新模板统计
+        setInterval(() => {
+            if (templates.length > 0) {
+                const totalDownloads = templates.reduce((sum, t) => sum + (t.downloadCount || 0), 0);
+                const averageRating = templates.reduce((sum, t) => sum + (t.rating || 0), 0) / templates.length;
+
+                document.getElementById('totalTemplates').textContent = templates.length;
+                document.getElementById('totalDownloads').textContent = totalDownloads;
+                document.getElementById('averageRating').textContent = Math.round(averageRating * 10) / 10;
+            }
+        }, 2000);
     </script>
 </body>
 </html>
