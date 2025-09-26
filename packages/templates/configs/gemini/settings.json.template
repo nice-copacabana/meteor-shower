@@ -1,0 +1,26 @@
+{
+  "model": "gemini-pro",
+  "temperature": 0.7,
+  "maxTokens": 4096,
+  "project": {
+    "name": "{{projectName}}",
+    "description": "{{projectDescription}}"
+  },
+  "persona": "{{persona}}",
+  "codeStyle": {
+    "language": "typescript",
+    "formatting": "prettier",
+    "linting": "eslint"
+  },
+  "safety": {
+    "dangerousCommands": ["rm -rf", "sudo", "dd"],
+    "backupEnabled": true,
+    "confirmChanges": true
+  },
+  "features": {
+    "autoComplete": true,
+    "codeAnalysis": true,
+    "documentation": true,
+    "testing": true
+  }
+}

@@ -1,0 +1,27 @@
+[plan]
+project = "{{projectName}}"
+description = "{{projectDescription}}"
+
+[planning]
+# 规划策略配置
+approach = "incremental"
+validation = true
+backup = true
+
+[commands]
+# 自定义命令配置
+build = "npm run build"
+test = "npm test"
+dev = "npm run dev"
+
+[safety]
+# 安全设置
+dangerous_commands = ["rm -rf", "sudo", "dd", "format"]
+require_confirmation = true
+max_file_size = "10MB"
+
+[ai]
+# AI 助手配置
+persona = "{{persona}}"
+context_window = 4096
+response_format = "markdown"

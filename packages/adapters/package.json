@@ -1,7 +1,7 @@
 {
-  "name": "@meteor-shower/utils",
+  "name": "@meteor-shower/adapters",
   "version": "0.1.0",
-  "description": "核心工具类库",
+  "description": "AI工具适配器集合",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "ajv": "^8.12.0",
+    "@meteor-shower/utils": "workspace:*",
     "chalk": "^5.3.0"
   },
   "devDependencies": {

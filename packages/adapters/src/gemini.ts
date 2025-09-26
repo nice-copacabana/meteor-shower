@@ -9,13 +9,23 @@
  */
 
 import { Adapter, ApplyContext, DiffResult } from './index.js';
+import { FileOperations } from '@meteor-shower/utils';
 import chalk from 'chalk';
+import fs from 'fs/promises';
+import path from 'path';
+import os from 'os';
 
 /**
  * Gemini 适配器类
  * 实现 Adapter 接口，提供 Gemini 工具的配置管理
  */
 export class GeminiAdapter implements Adapter {
+  private fileOps: FileOperations;
+  private backupPaths: Map<string, string> = new Map();
+
+  constructor() {
+    this.fileOps = new FileOperations();
+  }
 
   /**
    * 规划配置变更
@@ -56,10 +66,7 @@ export class GeminiAdapter implements Adapter {
     }
 
     // 执行配置写入
-    // TODO: 实际的文件写入逻辑
-    console.log(chalk.gray('  ✅ 写入 ~/.gemini/GEMINI.md'));
-    console.log(chalk.gray('  ✅ 写入 ~/.gemini/settings.json'));
-    console.log(chalk.gray('  ✅ 写入 .gemini/commands/plan.toml'));
+    await this.writeGeminiConfigs(ctx);
   }
 
   /**
@@ -71,10 +78,85 @@ export class GeminiAdapter implements Adapter {
    */
   async rollback(ctx: ApplyContext): Promise<void> {
     console.log(chalk.yellow('🔄 回滚 Gemini 配置...'));
-    console.log(chalk.gray('  ✅ 恢复备份文件'));
-    // TODO: 实际的回滚逻辑
-    // 1. 读取备份文件
-    // 2. 恢复原文件
-    // 3. 清理临时文件
+    
+    // 恢复所有备份文件
+    for (const [originalPath, backupPath] of this.backupPaths) {
+      try {
+        await this.fileOps.rollbackFromBackup(backupPath, originalPath);
+      } catch (error) {
+        console.error(chalk.red(`❌ 回滚失败 ${originalPath}: ${error}`));
+      }
+    }
+    
+    this.backupPaths.clear();
+    console.log(chalk.green('✅ Gemini 配置回滚完成'));
+  }
+
+  /**
+   * 写入 Gemini 配置文件
+   * 根据模板和变量生成实际的配置文件
+   *
+   * @param ctx 应用上下文
+   */
+  private async writeGeminiConfigs(ctx: ApplyContext): Promise<void> {
+    const homeDir = os.homedir();
+    const projectRoot = process.cwd();
+    
+    // 配置文件路径定义
+    const configs = [
+      {
+        template: 'GEMINI.md.template',
+        target: path.join(homeDir, '.gemini', 'GEMINI.md'),
+        description: '主配置文件'
+      },
+      {
+        template: 'settings.json.template',
+        target: path.join(homeDir, '.gemini', 'settings.json'),
+        description: '设置文件'
+      },
+      {
+        template: 'plan.toml.template',
+        target: path.join(projectRoot, '.gemini', 'commands', 'plan.toml'),
+        description: '命令规划文件'
+      }
+    ];
+
+    // 写入每个配置文件
+    for (const config of configs) {
+      try {
+        const content = await this.renderConfigTemplate(config.template, ctx.variables);
+        await this.fileOps.writeFile(config.target, content);
+        console.log(chalk.gray(`  ✅ 写入 ${config.description}: ${config.target}`));
+      } catch (error) {
+        console.error(chalk.red(`❌ 写入失败 ${config.description}: ${error}`));
+        throw error;
+      }
+    }
+  }
+
+  /**
+   * 渲染配置模板
+   * 使用变量替换模板中的占位符
+   *
+   * @param templateName 模板文件名
+   * @param variables 变量映射
+   * @returns 渲染后的内容
+   */
+  private async renderConfigTemplate(templateName: string, variables: Record<string, unknown>): Promise<string> {
+    const templatePath = path.join(
+      process.cwd(),
+      'packages/templates/configs/gemini',
+      templateName
+    );
+    
+    let content = await fs.readFile(templatePath, 'utf-8');
+    
+    // 替换模板变量
+    for (const [key, value] of Object.entries(variables)) {
+      const placeholder = new RegExp(`\{\{${key}\}\}`, 'g');
+      content = content.replace(placeholder, String(value));
+    }
+    
+    return content;
   }
 }
