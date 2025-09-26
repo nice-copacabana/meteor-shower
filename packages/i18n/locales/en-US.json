@@ -1,0 +1,152 @@
+{
+  "app": {
+    "name": "meteor-shower",
+    "description": "One-click optimization and sync platform for AI programming tools",
+    "version": "Version",
+    "welcome": "Welcome to meteor-shower"
+  },
+  "commands": {
+    "init": {
+      "description": "Initialize configuration",
+      "success": "Initialization completed!",
+      "selectTools": "Select AI tools to configure:",
+      "selectTemplate": "Select configuration template:",
+      "projectName": "Project name:",
+      "persona": "AI persona description:",
+      "generating": "Generating configuration...",
+      "completed": "Configuration generation completed"
+    },
+    "diff": {
+      "description": "View configuration differences",
+      "noChanges": "No configuration changes found",
+      "changes": "Found {{count}} configuration changes"
+    },
+    "apply": {
+      "description": "Apply configuration",
+      "dryRun": "Dry run mode: skipping actual writes",
+      "applying": "Applying configuration...",
+      "success": "Configuration applied successfully!",
+      "failed": "Configuration application failed",
+      "rollback": "Rolling back configuration..."
+    },
+    "share": {
+      "description": "Share configuration template",
+      "uploading": "Uploading template...",
+      "success": "Template shared successfully!"
+    }
+  },
+  "tools": {
+    "gemini": "Gemini CLI",
+    "claude": "Claude Code",
+    "cursor": "Cursor", 
+    "openai": "OpenAI/Generic"
+  },
+  "templates": {
+    "basic": "Basic Template",
+    "advanced": "Advanced Template",
+    "enterprise": "Enterprise Template",
+    "gemini-basic": "Gemini Basic Template",
+    "claude-basic": "Claude Basic Template"
+  },
+  "ui": {
+    "dashboard": {
+      "title": "Console",
+      "subtitle": "One-click optimization and sync platform for AI programming tools",
+      "navigation": {
+        "home": "Main Console",
+        "monitoring": "Monitoring Dashboard",
+        "config": "Configuration Management"
+      }
+    },
+    "monitoring": {
+      "title": "Monitoring Dashboard",
+      "systemMetrics": "System Metrics",
+      "serviceStatus": "Service Status",
+      "responseTime": "Response Time Trends",
+      "errorRate": "Error Rate Statistics",
+      "recentActivities": "Recent Activities",
+      "alerts": "System Alerts",
+      "cpu": "CPU Usage",
+      "memory": "Memory Usage",
+      "activeSessions": "Active Sessions",
+      "online": "Online",
+      "warning": "Warning",
+      "offline": "Offline"
+    },
+    "config": {
+      "title": "Configuration Management Center",
+      "subtitle": "Manage and monitor all AI tool configurations",
+      "overview": "Current Configuration Overview",
+      "details": "Configuration Details",
+      "create": "Create Configuration",
+      "edit": "Edit",
+      "apply": "Apply",
+      "delete": "Delete",
+      "export": "Export Configuration",
+      "import": "Import Configuration",
+      "refresh": "Refresh Configuration",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending"
+      }
+    },
+    "common": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close",
+      "confirm": "Confirm",
+      "loading": "Loading...",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    }
+  },
+  "errors": {
+    "fileNotFound": "File not found",
+    "permissionDenied": "Permission denied",
+    "networkError": "Network error",
+    "invalidConfig": "Invalid configuration format",
+    "templateNotFound": "Template not found",
+    "backupFailed": "Failed to create backup",
+    "rollbackFailed": "Rollback failed"
+  },
+  "plugins": {
+    "loaded": "Plugin loaded successfully",
+    "unloaded": "Plugin unloaded",
+    "enabled": "Plugin enabled",
+    "disabled": "Plugin disabled",
+    "codeQuality": {
+      "name": "Code Quality Checker",
+      "description": "Automatically check code quality including syntax, formatting and best practices",
+      "checking": "Running code quality check...",
+      "passed": "Code quality check passed",
+      "issues": "Found {{count}} code quality issues"
+    },
+    "backupManager": {
+      "name": "Smart Backup Manager",
+      "description": "Automatically backup configuration files with version control and cleanup",
+      "creating": "Creating smart backup...",
+      "success": "Backup created successfully",
+      "rolling": "Performing smart rollback...",
+      "rollbackComplete": "Rollback completed"
+    },
+    "performanceMonitor": {
+      "name": "Performance Monitor",
+      "description": "Monitor configuration application performance and collect key metrics",
+      "monitoring": "Starting performance monitoring...",
+      "report": "Performance Report",
+      "duration": "Configuration generation time",
+      "applicationTime": "Configuration application time"
+    }
+  },
+  "performance": {
+    "report": "Performance Report",
+    "summary": "Performance Summary",
+    "metrics": "Performance Metrics",
+    "optimization": "Optimization Suggestions",
+    "benchmark": "Benchmark Testing",
+    "loadTest": "Load Testing"
+  }
+}

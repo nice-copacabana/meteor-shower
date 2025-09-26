@@ -1,0 +1,152 @@
+{
+  "app": {
+    "name": "meteor-shower",
+    "description": "AI 프로그래밍 도구 원클릭 최적화 및 동기화 플랫폼",
+    "version": "버전",
+    "welcome": "meteor-shower에 오신 것을 환영합니다"
+  },
+  "commands": {
+    "init": {
+      "description": "구성 초기화",
+      "success": "초기화가 완료되었습니다!",
+      "selectTools": "구성할 AI 도구 선택:",
+      "selectTemplate": "구성 템플릿 선택:",
+      "projectName": "프로젝트 이름:",
+      "persona": "AI 페르소나 설명:",
+      "generating": "구성 생성 중...",
+      "completed": "구성 생성이 완료되었습니다"
+    },
+    "diff": {
+      "description": "구성 차이점 보기",
+      "noChanges": "구성 변경 사항을 찾을 수 없습니다",
+      "changes": "{{count}}개의 구성 변경 사항을 찾았습니다"
+    },
+    "apply": {
+      "description": "구성 적용",
+      "dryRun": "드라이 런 모드: 실제 쓰기 건너뛰기",
+      "applying": "구성 적용 중...",
+      "success": "구성이 성공적으로 적용되었습니다!",
+      "failed": "구성 적용이 실패했습니다",
+      "rollback": "구성 롤백 중..."
+    },
+    "share": {
+      "description": "구성 템플릿 공유",
+      "uploading": "템플릿 업로드 중...",
+      "success": "템플릿이 성공적으로 공유되었습니다!"
+    }
+  },
+  "tools": {
+    "gemini": "Gemini CLI",
+    "claude": "Claude Code",
+    "cursor": "Cursor",
+    "openai": "OpenAI/범용"
+  },
+  "templates": {
+    "basic": "기본 템플릿",
+    "advanced": "고급 템플릿",
+    "enterprise": "엔터프라이즈 템플릿",
+    "gemini-basic": "Gemini 기본 템플릿",
+    "claude-basic": "Claude 기본 템플릿"
+  },
+  "ui": {
+    "dashboard": {
+      "title": "콘솔",
+      "subtitle": "AI 프로그래밍 도구 원클릭 최적화 및 동기화 플랫폼",
+      "navigation": {
+        "home": "메인 콘솔",
+        "monitoring": "모니터링 대시보드",
+        "config": "구성 관리"
+      }
+    },
+    "monitoring": {
+      "title": "모니터링 대시보드",
+      "systemMetrics": "시스템 메트릭",
+      "serviceStatus": "서비스 상태",
+      "responseTime": "응답 시간 추이",
+      "errorRate": "오류율 통계",
+      "recentActivities": "최근 활동",
+      "alerts": "시스템 알림",
+      "cpu": "CPU 사용률",
+      "memory": "메모리 사용률",
+      "activeSessions": "활성 세션",
+      "online": "온라인",
+      "warning": "경고",
+      "offline": "오프라인"
+    },
+    "config": {
+      "title": "구성 관리 센터",
+      "subtitle": "모든 AI 도구 구성을 관리하고 모니터링",
+      "overview": "현재 구성 개요",
+      "details": "구성 세부 정보",
+      "create": "구성 생성",
+      "edit": "편집",
+      "apply": "적용",
+      "delete": "삭제",
+      "export": "구성 내보내기",
+      "import": "구성 가져오기",
+      "refresh": "구성 새로 고침",
+      "status": {
+        "active": "활성",
+        "inactive": "비활성",
+        "pending": "대기 중"
+      }
+    },
+    "common": {
+      "save": "저장",
+      "cancel": "취소",
+      "close": "닫기",
+      "confirm": "확인",
+      "loading": "로딩 중...",
+      "success": "성공",
+      "error": "오류",
+      "warning": "경고",
+      "info": "정보"
+    }
+  },
+  "errors": {
+    "fileNotFound": "파일을 찾을 수 없습니다",
+    "permissionDenied": "권한이 거부되었습니다",
+    "networkError": "네트워크 오류",
+    "invalidConfig": "구성 형식이 유효하지 않습니다",
+    "templateNotFound": "템플릿이 존재하지 않습니다",
+    "backupFailed": "백업 생성에 실패했습니다",
+    "rollbackFailed": "롤백에 실패했습니다"
+  },
+  "plugins": {
+    "loaded": "플러그인이 성공적으로 로드되었습니다",
+    "unloaded": "플러그인이 언로드되었습니다",
+    "enabled": "플러그인이 활성화되었습니다",
+    "disabled": "플러그인이 비활성화되었습니다",
+    "codeQuality": {
+      "name": "코드 품질 검사기",
+      "description": "구문, 형식 및 모범 사례를 포함한 코드 품질을 자동으로 검사",
+      "checking": "코드 품질 검사 실행 중...",
+      "passed": "코드 품질 검사를 통과했습니다",
+      "issues": "{{count}}개의 코드 품질 문제를 발견했습니다"
+    },
+    "backupManager": {
+      "name": "스마트 백업 관리자",
+      "description": "버전 제어 및 정리 기능이 있는 자동 구성 파일 백업",
+      "creating": "스마트 백업 실행 중...",
+      "success": "백업이 성공적으로 생성되었습니다",
+      "rolling": "스마트 롤백 실행 중...",
+      "rollbackComplete": "롤백이 완료되었습니다"
+    },
+    "performanceMonitor": {
+      "name": "성능 모니터",
+      "description": "구성 적용 성능을 모니터링하고 주요 메트릭을 수집",
+      "monitoring": "성능 모니터링 시작 중...",
+      "report": "성능 보고서",
+      "duration": "구성 생성 시간",
+      "applicationTime": "구성 적용 시간"
+    }
+  },
+  "performance": {
+    "report": "성능 보고서",
+    "summary": "성능 요약",
+    "metrics": "성능 메트릭",
+    "optimization": "최적화 제안",
+    "benchmark": "벤치마크 테스트",
+    "loadTest": "부하 테스트"
+  }
+}

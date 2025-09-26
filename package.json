@@ -22,7 +22,13 @@
     "dev": "npm run dev --workspace=packages/cli",
 
     // 测试脚本 - 根目录测试占位符
-    "test": "echo 'Tests will be implemented in individual packages'",
+    "test": "vitest",
+
+    // 测试覆盖率
+    "test:coverage": "vitest --coverage",
+
+    // 运行所有包的测试
+    "test:all": "npm run test --workspaces",
 
     // 运行CLI包的测试
     "test:cli": "npm run test --workspace=packages/cli",

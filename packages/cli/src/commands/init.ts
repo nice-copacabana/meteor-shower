@@ -107,9 +107,198 @@ async function collectVariables(template: string, toolset: string[]) {
 
   variables.projectName = projectName;
   variables.persona = persona;
+  variables.projectDescription = `${projectName} - AI 辅助开发项目`;
 
-  // TODO: 根据不同模板和工具集收集特定的变量
-  // 如：API密钥、模型偏好、代码风格等
+  // 根据不同模板和工具集收集特定的变量
+  await collectTemplateSpecificVariables(variables, template);
+  await collectToolSpecificVariables(variables, toolset);
 
   return variables;
+}
+
+/**
+ * 收集模板特定的变量
+ * 根据选择的模板收集额外的配置变量
+ *
+ * @param variables 变量对象（会被修改）
+ * @param template 模板名称
+ */
+async function collectTemplateSpecificVariables(
+  variables: Record<string, unknown>,
+  template: string
+): Promise<void> {
+  if (template === 'advanced-multi') {
+    // 高级多工具模板需要额外的配置
+    const advanced = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'primaryLanguage',
+        message: '主要编程语言:',
+        choices: ['TypeScript', 'JavaScript', 'Python', 'Java', 'Go', 'Rust']
+      },
+      {
+        type: 'list',
+        name: 'framework',
+        message: '主要框架:',
+        choices: ['React', 'Vue', 'Angular', 'Express', 'FastAPI', 'Spring Boot', '其他']
+      },
+      {
+        type: 'confirm',
+        name: 'useTypeScript',
+        message: '使用 TypeScript?',
+        default: true
+      }
+    ]);
+    
+    Object.assign(variables, advanced);
+  }
+  
+  if (template.includes('claude')) {
+    // Claude 模板的特定变量
+    const claude = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'responseStyle',
+        message: 'Claude 响应风格:',
+        choices: ['简洁', '详细', '教学式', '协作式'],
+        default: '协作式'
+      }
+    ]);
+    
+    variables.responseStyle = claude.responseStyle;
+  }
+}
+
+/**
+ * 收集工具特定的变量
+ * 根据选择的工具集收集每个工具的特定配置
+ *
+ * @param variables 变量对象（会被修改）
+ * @param toolset 工具集数组
+ */
+async function collectToolSpecificVariables(
+  variables: Record<string, unknown>,
+  toolset: string[]
+): Promise<void> {
+  // Gemini 特定配置
+  if (toolset.includes('gemini')) {
+    const gemini = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'geminiModel',
+        message: 'Gemini 模型选择:',
+        choices: ['gemini-pro', 'gemini-pro-vision'],
+        default: 'gemini-pro'
+      },
+      {
+        type: 'number',
+        name: 'temperature',
+        message: 'Gemini 温度参数 (0.0-1.0):',
+        default: 0.7,
+        validate: (value) => value >= 0 && value <= 1
+      }
+    ]);
+    
+    variables.geminiModel = gemini.geminiModel;
+    variables.temperature = gemini.temperature;
+  }
+  
+  // Claude 特定配置
+  if (toolset.includes('claude')) {
+    const claude = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'claudeModel',
+        message: 'Claude 模型选择:',
+        choices: ['claude-3-opus', 'claude-3-sonnet', 'claude-3-haiku'],
+        default: 'claude-3-sonnet'
+      },
+      {
+        type: 'confirm',
+        name: 'enableVision',
+        message: '启用 Claude 视觉功能?',
+        default: false
+      }
+    ]);
+    
+    variables.claudeModel = claude.claudeModel;
+    variables.enableVision = claude.enableVision;
+  }
+  
+  // Cursor 特定配置
+  if (toolset.includes('cursor')) {
+    const cursor = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'cursorModel',
+        message: 'Cursor AI 模型:',
+        choices: ['gpt-4', 'gpt-3.5-turbo', 'claude-3'],
+        default: 'gpt-4'
+      },
+      {
+        type: 'confirm',
+        name: 'enableComposer',
+        message: '启用 Cursor Composer?',
+        default: true
+      }
+    ]);
+    
+    variables.cursorModel = cursor.cursorModel;
+    variables.enableComposer = cursor.enableComposer;
+  }
+  
+  // OpenAI 特定配置
+  if (toolset.includes('openai')) {
+    const openai = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'openaiModel',
+        message: 'OpenAI 模型选择:',
+        choices: ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo'],
+        default: 'gpt-4'
+      },
+      {
+        type: 'number',
+        name: 'maxTokens',
+        message: '最大 token 数:',
+        default: 4096,
+        validate: (value) => value > 0 && value <= 128000
+      },
+      {
+        type: 'confirm',
+        name: 'streamResponse',
+        message: '启用流式响应?',
+        default: true
+      }
+    ]);
+    
+    variables.openaiModel = openai.openaiModel;
+    variables.maxTokens = openai.maxTokens;
+    variables.streamResponse = openai.streamResponse;
+  }
+  
+  // 代码风格相关配置（所有工具通用）
+  const codeStyle = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'indentStyle',
+      message: '代码缩进风格:',
+      choices: ['2 spaces', '4 spaces', 'tabs'],
+      default: '2 spaces'
+    },
+    {
+      type: 'confirm',
+      name: 'enablePrettier',
+      message: '启用 Prettier 格式化?',
+      default: true
+    },
+    {
+      type: 'confirm',
+      name: 'enableESLint',
+      message: '启用 ESLint 检查?',
+      default: true
+    }
+  ]);
+  
+  Object.assign(variables, codeStyle);
 }
