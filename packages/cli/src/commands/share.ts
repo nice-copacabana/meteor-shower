@@ -7,6 +7,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
 import { FileOperations } from '@meteor-shower/utils';
+import Database from 'better-sqlite3';
+import { UserTierManager } from '@meteor-shower/enterprise/tier/tier-manager.js';
 
 /**
  * 模板分享选项
@@ -45,6 +47,31 @@ interface TemplatePackage {
  */
 export async function shareCommand(options: ShareOptions = {}) {
   console.log(chalk.cyan('📦 打包当前配置为模板...'));
+  
+  // 步骤0: 检查用户分享配额
+  const userId = process.env.METEOR_USER_ID;
+  if (userId) {
+    const quotaCheck = await checkShareQuota(userId);
+    if (!quotaCheck.allowed) {
+      console.log(chalk.red(`\n❌ 分享配额限制: ${quotaCheck.reason}`));
+      console.log(chalk.yellow('\n💡 提示:'));
+      console.log(chalk.gray(`   当前层级: ${quotaCheck.tier}`));
+      console.log(chalk.gray(`   本月已使用: ${quotaCheck.current}/${quotaCheck.limit}`));
+      console.log(chalk.gray('   运行 ms account upgrade 升级以获取更多配额\n'));
+      
+      // 显示升级建议
+      const suggestion = quotaCheck.suggestion;
+      if (suggestion && suggestion.shouldUpgrade) {
+        console.log(chalk.cyan(`   建议升级到: ${suggestion.suggestedTier}`));
+      }
+      return;
+    }
+    
+    // 显示配额信息
+    if (quotaCheck.remaining !== -1) {
+      console.log(chalk.gray(`  本月剩余分享次数: ${quotaCheck.remaining}\n`));
+    }
+  }
   
   const fileOps = new FileOperations();
   const projectRoot = process.cwd();
@@ -257,5 +284,53 @@ async function uploadToCloudHub(templatePackage: TemplatePackage, isPublic: bool
   } catch (error: any) {
     console.error(chalk.red(`❌ 上传失败: ${error.message}`));
     console.log(chalk.yellow('模板已保存到本地，可以稍后重试上传'));
+  }
+}
+
+/**
+ * 检查分享配额
+ * @param userId 用户ID
+ */
+async function checkShareQuota(userId: string): Promise<{
+  allowed: boolean;
+  reason?: string;
+  current: number;
+  limit: number;
+  remaining: number;
+  tier?: string;
+  suggestion?: any;
+}> {
+  try {
+    const dbPath = process.env.METEOR_DB_PATH || path.join(os.homedir(), '.meteor-shower', 'meteor.db');
+    
+    // 检查数据库是否存在
+    try {
+      await fs.access(dbPath);
+    } catch {
+      // 数据库不存在，跳过配额检查
+      return { allowed: true, current: 0, limit: -1, remaining: -1 };
+    }
+
+    const db = new Database(dbPath);
+    const tierManager = new UserTierManager(db);
+
+    const quotaResult = tierManager.checkShareQuota(userId);
+    const userQuotas = tierManager.getUserQuotas(userId);
+    const suggestion = tierManager.getUpgradeSuggestion(userId);
+
+    db.close();
+
+    return {
+      allowed: quotaResult.allowed,
+      reason: quotaResult.reason,
+      current: quotaResult.current,
+      limit: quotaResult.limit,
+      remaining: quotaResult.remaining,
+      tier: userQuotas?.tier,
+      suggestion
+    };
+  } catch (error) {
+    console.warn(chalk.yellow('⚠️  无法检查配额，继续执行...'));
+    return { allowed: true, current: 0, limit: -1, remaining: -1 };
   }
 }
