@@ -338,6 +338,24 @@ services:
 3. **配置自动备份**
 4. **设置日志聚合**
 5. **配置负载均衡**
+6. **用户分层与定价体系**（M6 阶段 - 规划中）
+   - 实现用户层级管理系统
+   - 开发数据治理和权限控制
+   - 构建配额管理和功能开关
+   - 集成支付和订阅管理
+   - 详见 [USER_TIER_AND_PRICING_DESIGN.md](./USER_TIER_AND_PRICING_DESIGN.md)
+7. **能力验证案例库**（M7 阶段 - 规划中）
+   - 实现专家案例管理系统
+   - 开发多工具执行引擎
+   - 构建智能评估和对比系统
+   - 建设社区专家认证功能
+   - 详见 [CAPABILITY_VALIDATION_MODULE_DESIGN.md](./CAPABILITY_VALIDATION_MODULE_DESIGN.md)
+8. **任务协调管理模块**（M8 阶段 - 规划中）
+   - 实现任务生命周期管理系统
+   - 开发跨工具任务监控功能
+   - 构建智能调度和通知系统
+   - 建设统一任务仪表板和工作流管理
+   - 详见 [TASK_COORDINATION_MODULE_DESIGN.md](./TASK_COORDINATION_MODULE_DESIGN.md)
 
 ---
 

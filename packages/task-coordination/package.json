@@ -1,0 +1,40 @@
+{
+  "name": "@meteor-shower/task-coordination",
+  "version": "0.1.0",
+  "description": "任务协调管理模块 - 统一管理跨工具的AI任务执行，提供智能调度和进度追踪",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "task-coordination",
+    "ai-tasks",
+    "scheduling",
+    "workflow",
+    "cross-tool",
+    "automation"
+  ],
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "node-cron": "^3.0.3",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.5",
+    "typescript": "^5.6.3",
+    "vitest": "^1.6.0"
+  },
+  "author": "meteor-shower team",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ]
+}
