@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="25" failures="0" errors="0" time="0.827">
+    <testsuite name="packages/adapters/tests/gemini.test.ts" timestamp="2025-10-14T09:19:06.386Z" hostname="LAPTOP-SN8A4EG8" tests="25" failures="0" errors="0" skipped="0" time="0.254">
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; plan &gt; should return changes for new Gemini installation" time="0.007">
+            <system-out>
+[90m📋 规划 Gemini 配置变更...[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; plan &gt; should detect create operation when files do not exist" time="0.003">
+            <system-out>
+[90m📋 规划 Gemini 配置变更...[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; plan &gt; should include all expected config files in changes" time="0.004">
+            <system-out>
+[90m📋 规划 Gemini 配置变更...[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; plan &gt; should return correct file count in summary" time="0.003">
+            <system-out>
+[90m📋 规划 Gemini 配置变更...[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should create all Gemini config files successfully" time="0.013">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546076\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546076\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546076\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should skip file creation in dry run mode" time="0.004">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+[33m🔍 模拟模式：跳过实际写入[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should replace variables in generated GEMINI.md" time="0.012">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546094\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546094\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546094\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should generate valid JSON settings file" time="0.013">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546105\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546105\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546105\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should generate valid TOML plan file" time="0.01">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546118\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546118\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546118\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should create backup before updating existing file" time="0.011">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546128\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546128\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546128\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should create directory structure if it does not exist" time="0.011">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546139\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546139\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546139\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; apply &gt; should use default values when variables are not provided" time="0.013">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546150\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546150\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546150\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; rollback &gt; should restore files from backup" time="0.014">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546163\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546163\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546163\.gemini\commands\plan.toml[39m
+[33m🔄 回滚 Gemini 配置...[39m
+
+[33m  🔄 回滚: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546163\home\.gemini\settings.json[39m
+[32m✅ Gemini 配置回滚完成[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; rollback &gt; should handle rollback when no backup exists" time="0.006">
+            <system-out>
+[33m🔄 回滚 Gemini 配置...[39m
+[32m✅ Gemini 配置回滚完成[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; rollback &gt; should clear backup paths after rollback" time="0.012">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546183\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546183\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546183\.gemini\commands\plan.toml[39m
+[33m🔄 回滚 Gemini 配置...[39m
+
+[33m  🔄 回滚: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546183\home\.gemini\settings.json[39m
+[32m✅ Gemini 配置回滚完成[39m
+[33m🔄 回滚 Gemini 配置...[39m
+[32m✅ Gemini 配置回滚完成[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Error handling &gt; should handle file write errors gracefully" time="0.01">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+&lt;empty line&gt;
+            </system-out>
+            <system-err>
+[31m  ❌ 写入失败 Gemini 主配置文件: Error: Write error[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Error handling &gt; should rollback on apply failure" time="0.009">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546205\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546205\home\.gemini\settings.json[39m
+
+&lt;empty line&gt;
+            </system-out>
+            <system-err>
+[31m  ❌ 写入失败 Gemini 命令规划文件: Error: Simulated failure[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Error handling &gt; should handle directory creation errors" time="0.006">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+&lt;empty line&gt;
+            </system-out>
+            <system-err>
+[31m  ❌ 写入失败 Gemini 主配置文件: Error: Cannot create directory[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Integration scenarios &gt; should complete full workflow: plan -&gt; apply -&gt; rollback" time="0.012">
+            <system-out>
+[90m📋 规划 Gemini 配置变更...[39m
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546220\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546220\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546220\.gemini\commands\plan.toml[39m
+[33m🔄 回滚 Gemini 配置...[39m
+[32m✅ Gemini 配置回滚完成[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Integration scenarios &gt; should handle multiple apply calls idempotently" time="0.026">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\.gemini\commands\plan.toml[39m
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\.gemini\commands\plan.toml[39m
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546232\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Integration scenarios &gt; should create proper directory structure" time="0.01">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546258\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546258\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546258\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Content generation &gt; should generate GEMINI.md with proper markdown structure" time="0.012">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546269\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546269\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546269\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Content generation &gt; should include Gemini-specific features in settings" time="0.009">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546281\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546281\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546281\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Content generation &gt; should generate comprehensive plan.toml with all sections" time="0.009">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546290\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546290\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546290\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+        <testcase classname="packages/adapters/tests/gemini.test.ts" name="GeminiAdapter &gt; Content generation &gt; should support custom model configuration" time="0.011">
+            <system-out>
+[32m⚡ 应用 Gemini 配置...[39m
+
+[90m  ✅ 写入 Gemini 主配置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546299\home\.gemini\GEMINI.md[39m
+
+[90m  ✅ 写入 Gemini 设置文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546299\home\.gemini\settings.json[39m
+
+[90m  ✅ 写入 Gemini 命令规划文件: C:\Users\Root\AppData\Local\Temp\gemini-test-1760433546299\.gemini\commands\plan.toml[39m
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>
