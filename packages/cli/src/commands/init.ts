@@ -5,6 +5,9 @@
 
 import inquirer from 'inquirer';           // 交互式命令行界面
 import chalk from 'chalk';                 // 终端颜色输出
+import { ConfigGenerator } from '@meteor-shower/utils';  // 配置生成器
+import fs from 'fs/promises';             // 文件系统操作
+import path from 'path';                  // 路径操作
 
 /**
  * 初始化选项接口
@@ -64,11 +67,30 @@ export async function initCommand(options: InitOptions = {}) {
   // 根据模板和工具集收集用户特定的配置变量
   const variables = await collectVariables(template, toolset);
 
-  // ========== 第4步：结果输出 ==========
+  // ========== 第4步：结果输出和配置保存 ==========
   console.log(chalk.green('✅ 初始化完成！'));
   console.log(chalk.gray(`工具集: ${toolset.join(', ')}`));
   console.log(chalk.gray(`模板: ${template}`));
   console.log(chalk.gray(`变量: ${Object.keys(variables).length} 个`));
+
+  // 生成配置计划
+  console.log(chalk.cyan('\n🔧 生成配置计划...'));
+  try {
+    const generator = new ConfigGenerator();
+    const configPlan = await generator.generateConfig(toolset, template, variables);
+    
+    // 保存配置计划到文件
+    const planPath = path.join(process.cwd(), '.meteor-shower', 'config-plan.json');
+    await fs.mkdir(path.dirname(planPath), { recursive: true });
+    await fs.writeFile(planPath, JSON.stringify(configPlan, null, 2), 'utf-8');
+    
+    console.log(chalk.green(`✅ 配置计划已保存: ${planPath}`));
+    console.log(chalk.gray(`📝 将创建 ${configPlan.operations.length} 个配置文件`));
+    console.log(chalk.gray('\n💡 下一步: 运行 ms diff 查看配置差异'));
+    console.log(chalk.gray('💡 然后: 运行 ms apply 应用配置'));
+  } catch (error) {
+    console.error(chalk.red('❌ 生成配置计划失败:'), error);
+  }
 
   return { toolset, template, variables };
 }
