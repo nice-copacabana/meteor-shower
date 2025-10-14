@@ -3,28 +3,22 @@
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
-
-  // 构建和运行脚本
   "scripts": {
-    "build": "tsc -p tsconfig.json",        // 编译TypeScript
-    "dev": "ts-node src/index.ts",          // 开发模式运行
-    "start": "node dist/index.js",          // 生产模式运行
-    "test": "echo 'no-tests-yet'"          // 测试占位符
+    "build": "tsc -p tsconfig.json",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "test": "echo 'no-tests-yet'"
   },
-
-  // 运行时依赖 - Web服务框架
   "dependencies": {
-    "express": "^4.19.2",                   // Express.js Web框架
-    "cors": "^2.8.5",                       // 跨域资源共享支持
-    "chalk": "^5.3.0"                       // 终端颜色输出
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "chalk": "^5.3.0"
   },
-
-  // 开发时依赖
   "devDependencies": {
-    "typescript": "^5.6.3",                 // TypeScript编译器
-    "ts-node": "^10.9.2",                   // TypeScript运行时
-    "@types/node": "^20.12.12",             // Node.js类型定义
-    "@types/express": "^4.17.21",           // Express类型定义
-    "@types/cors": "^2.8.17"                // CORS类型定义
+    "typescript": "^5.6.3",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.12.12",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17"
   }
 }
