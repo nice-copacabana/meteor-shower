@@ -90,13 +90,13 @@ export { OpenAIAdapter } from './openai.js';
 export function createAdapter(target: ToolTarget): Adapter {
   switch (target) {
     case 'gemini':
-      return new (require('./gemini.js')).GeminiAdapter();
+      return new GeminiAdapter();
     case 'claude':
-      return new (require('./claude.js')).ClaudeAdapter();
+      return new ClaudeAdapter();
     case 'cursor':
-      return new (require('./cursor.js')).CursorAdapter();
+      return new CursorAdapter();
     case 'openai':
-      return new (require('./openai.js')).OpenAIAdapter();
+      return new OpenAIAdapter();
     default:
       return new NoopAdapter();
   }

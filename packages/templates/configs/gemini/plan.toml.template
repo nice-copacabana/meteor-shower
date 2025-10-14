@@ -1,6 +1,17 @@
 [plan]
-project = "{{projectName}}"
-description = "{{projectDescription}}"
+description = "{{projectName}} development plan"
+author = "{{persona}}"
+
+[tasks]
+analyze = "Analyze requirements and design"
+implement = "Implement features with tests"
+review = "Code review and refactoring"
+deploy = "Deploy to production"
+
+[settings]
+model = "{{geminiModel}}"
+temperature = {{temperature}}
+max_tokens = 4096
 
 [planning]
 # 规划策略配置
@@ -24,4 +35,4 @@ max_file_size = "10MB"
 # AI 助手配置
 persona = "{{persona}}"
 context_window = 4096
-response_format = "markdown"
+response_format = "``"
