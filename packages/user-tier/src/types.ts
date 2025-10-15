@@ -237,12 +237,3 @@ export const PRICING_PLANS: Record<UserTier, PricingPlan> = {
 };
 
 // ==================== 导出所有类型 ====================
-
-export type {
-  User,
-  Organization,
-  Department,
-  OrganizationSettings,
-  PricingPlan,
-  TierLimits,
-};

@@ -16,6 +16,9 @@ export type {
   PermissionCheckResult 
 } from './data-governance.js';
 
+// 导出数据库模块
+export * from './database/index.js';
+
 // 便捷实例
 import { UserTierManager } from './tier-manager.js';
 import { DataGovernanceManager } from './data-governance.js';
