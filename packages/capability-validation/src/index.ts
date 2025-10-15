@@ -17,6 +17,7 @@ import Database from 'better-sqlite3';
 import { nanoid } from 'nanoid';
 import { ValidationCaseDAO, CaseExecutionDAO, CaseVersionDAO } from './database/dao.js';
 import { initializeCaseDatabase } from './database/schema.js';
+import { CategoryManager } from './category-manager.js';
 
 /**
  * 测试案例类别枚举（10个核心能力类别）
@@ -333,6 +334,7 @@ export class CaseManager {
   private caseDAO: ValidationCaseDAO;
   private executionDAO: CaseExecutionDAO;
   private versionDAO: CaseVersionDAO;
+  public readonly categoryManager: CategoryManager;
 
   constructor(dbPath: string = ':memory:') {
     this.db = new Database(dbPath);
@@ -340,6 +342,7 @@ export class CaseManager {
     this.caseDAO = new ValidationCaseDAO(this.db);
     this.executionDAO = new CaseExecutionDAO(this.db);
     this.versionDAO = new CaseVersionDAO(this.db);
+    this.categoryManager = new CategoryManager(this.db);
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
@@ -609,8 +612,12 @@ export class CommunityService {
 }
 
 // 导出所有公共 API
+export { CategoryManager } from './category-manager.js';
+export type { CategoryInfo, DifficultyInfo, CategoryStats, DifficultyStats } from './category-manager.js';
+
 export default {
   CaseManager,
+  CategoryManager,
   CaseExecutor,
   ResultEvaluator,
   CommunityService,
