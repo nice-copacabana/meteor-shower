@@ -20,6 +20,7 @@ import { initializeCaseDatabase } from './database/schema.js';
 import { CategoryManager } from './category-manager.js';
 import { ExecutionEngine, ToolAdapter } from './execution-engine.js';
 import { ResultEvaluator } from './result-evaluator.js';
+import { ComparisonAnalyzer } from './comparison-analyzer.js';
 
 /**
  * 测试案例类别枚举（10个核心能力类别）
@@ -339,6 +340,7 @@ export class CaseManager {
   public readonly categoryManager: CategoryManager;
   public readonly executionEngine: ExecutionEngine;
   public readonly resultEvaluator: ResultEvaluator;
+  public readonly comparisonAnalyzer: ComparisonAnalyzer;
 
   constructor(dbPath: string = ':memory:') {
     this.db = new Database(dbPath);
@@ -349,6 +351,7 @@ export class CaseManager {
     this.categoryManager = new CategoryManager(this.db);
     this.executionEngine = new ExecutionEngine(this.db);
     this.resultEvaluator = new ResultEvaluator();
+    this.comparisonAnalyzer = new ComparisonAnalyzer(this.db);
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
@@ -633,12 +636,15 @@ export { ExecutionEngine, MockToolAdapter, GenericToolAdapter } from './executio
 export type { ExecutionParams, BatchExecutionParams, ExecutionContext, ToolAdapter } from './execution-engine.js';
 export { ResultEvaluator as ResultEvaluatorImpl } from './result-evaluator.js';
 export type { EvaluationScores, EvaluationAnalysis, EvaluationStrategy } from './result-evaluator.js';
+export { ComparisonAnalyzer } from './comparison-analyzer.js';
+export type { ComparisonReport, RankingEntry, ComparisonInsights, BatchComparisonReport } from './comparison-analyzer.js';
 
 export default {
   CaseManager,
   CategoryManager,
   ExecutionEngine,
   ResultEvaluator,
+  ComparisonAnalyzer,
   CaseExecutor,
   CommunityService,
   CaseCategory,
