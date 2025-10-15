@@ -13,6 +13,9 @@
  * 详细设计：参见 ../../TASK_COORDINATION_MODULE_DESIGN.md
  */
 
+// 导出状态引擎
+export * from './state-engine.js';
+
 /**
  * 任务状态枚举
  */
