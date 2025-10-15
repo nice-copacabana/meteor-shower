@@ -1,16 +1,49 @@
+/**
+ * 配置生成器模块
+ * 基于模板和变量生成具体的配置操作计划
+ *
+ * 核心功能：
+ * - 模板渲染：将模板转换为具体配置
+ * - 操作规划：生成文件操作序列
+ * - 多工具支持：为不同工具生成相应配置
+ */
 import { TemplateEngine } from './template-engine.js';
 import { FileOperations } from './file-ops.js';
-import chalk from 'chalk';
+import chalk from 'chalk'; // 终端颜色输出
+/**
+ * 配置生成器类
+ * 负责将模板和变量转换为具体的配置操作计划
+ *
+ * 工作流程：
+ * 1. 加载和验证模板
+ * 2. 为每个目标工具生成配置
+ * 3. 生成文件操作序列
+ * 4. 返回完整的配置计划
+ */
 export class ConfigGenerator {
+    /**
+     * 构造函数
+     * 初始化模板引擎和文件操作实例
+     */
     constructor() {
         this.templateEngine = new TemplateEngine();
         this.fileOps = new FileOperations();
     }
+    /**
+     * 生成配置计划
+     * 基于工具集、模板和变量生成完整的配置操作计划
+     *
+     * @param toolset 目标工具集合
+     * @param templateId 模板ID
+     * @param variables 变量映射
+     * @returns 完整的配置计划，包含所有文件操作
+     */
     async generateConfig(toolset, templateId, variables) {
         console.log(chalk.cyan('🔧 生成配置计划...'));
+        // 加载并验证模板
         const template = await this.templateEngine.loadTemplate(templateId);
         const operations = [];
-        // 为每个工具生成配置
+        // 为每个目标工具生成对应的配置操作
         for (const tool of toolset) {
             const configs = await this.generateToolConfig(tool, template, variables);
             operations.push(...configs);

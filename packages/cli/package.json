@@ -2,53 +2,30 @@
   "name": "meteor-shower-cli",
   "version": "0.1.0",
   "type": "module",
-
-  // 命令行入口点配置
-  // "ms"命令指向构建后的入口文件
   "bin": {
     "ms": "dist/index.js"
   },
   "scripts": {
-    // 构建TypeScript代码
     "build": "tsc -p tsconfig.json",
-
-    // 开发模式运行（使用ts-node直接运行TypeScript）
     "dev": "ts-node src/index.ts",
-
-    // 代码检查占位符（暂未实现）
     "lint": "echo 'no-lint-yet'",
-
-    // 运行测试套件
     "test": "vitest run",
-
-    // 监听模式运行测试
     "test:watch": "vitest",
-
-    // 运行测试并生成覆盖率报告
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    // 运行时依赖
-    // - commander: 命令行参数解析库
-    // - chalk: 终端颜色输出美化
-    // - inquirer: 交互式命令行界面
-    // - ajv: JSON Schema验证器
-    "commander": "^12.1.0",
+    "ajv": "^8.17.1",
     "chalk": "^5.3.0",
+    "cli-table3": "^0.6.5",
+    "commander": "^12.1.0",
     "inquirer": "^9.3.6",
-    "ajv": "^8.17.1"
+    "ora": "^9.0.0"
   },
   "devDependencies": {
-    // 开发时依赖
-    // - typescript: TypeScript编译器
-    // - ts-node: TypeScript执行环境，用于开发模式
-    // - @types/node: Node.js类型定义
-    // - vitest: 测试框架
-    // - @vitest/coverage-v8: 测试覆盖率插件
-    "typescript": "^5.6.3",
-    "ts-node": "^10.9.2",
     "@types/node": "^20.12.12",
-    "vitest": "^1.6.0",
-    "@vitest/coverage-v8": "^1.6.0"
+    "@vitest/coverage-v8": "^1.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "vitest": "^1.6.0"
   }
 }

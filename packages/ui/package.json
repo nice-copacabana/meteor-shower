@@ -3,25 +3,19 @@
   "version": "0.1.0",
   "type": "module",
   "main": "dist/server.js",
-
-  // 构建和运行脚本
   "scripts": {
-    "build": "tsc -p tsconfig.json",        // 编译TypeScript
-    "dev": "ts-node src/server.ts",         // 开发模式运行
-    "start": "node dist/server.js"          // 生产模式运行
+    "build": "tsc -p tsconfig.json",
+    "dev": "ts-node src/server.ts",
+    "start": "node dist/server.js"
   },
-
-  // 运行时依赖 - Web服务和静态文件服务
   "dependencies": {
-    "express": "^4.19.2",                   // Express.js Web框架
-    "chalk": "^5.3.0"                       // 终端颜色输出
+    "express": "^4.19.2",
+    "chalk": "^5.3.0"
   },
-
-  // 开发时依赖
   "devDependencies": {
-    "typescript": "^5.6.3",                 // TypeScript编译器
-    "ts-node": "^10.9.2",                   // TypeScript运行时
-    "@types/node": "^20.12.12",             // Node.js类型定义
-    "@types/express": "^4.17.21"            // Express类型定义
+    "typescript": "^5.6.3",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.12.12",
+    "@types/express": "^4.17.21"
   }
 }

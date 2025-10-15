@@ -1,59 +1,24 @@
 {
   "name": "meteor-shower",
   "version": "0.1.0",
-  "description": "AI 编程工具一键优化与同步平台",
+  "description": "AI Programming Tools One-Click Optimization and Sync Platform",
   "type": "module",
   "workspaces": [
     "packages/*"
   ],
-
-  // 项目脚本配置
-  // - build: 构建所有工作空间
-  // - dev: 开发模式运行CLI
-  // - test: 测试占位符，具体实现在各包中
-  // - lint: 代码检查占位符
-  // - clean: 清理构建产物和依赖
-  // - install:all: 安装根目录和所有工作空间依赖
   "scripts": {
-    // 构建所有工作空间的包
     "build": "npm run build --workspaces",
-
-    // 开发模式运行CLI工具
     "dev": "npm run dev --workspace=packages/cli",
-
-    // 测试脚本 - 根目录测试占位符
     "test": "vitest",
-
-    // 测试覆盖率
     "test:coverage": "vitest --coverage",
-
-    // 运行所有包的测试
     "test:all": "npm run test --workspaces",
-
-    // 运行CLI包的测试
     "test:cli": "npm run test --workspace=packages/cli",
-
-    // 运行所有工作空间的测试
-    "test:all": "npm run test --workspaces",
-
-    // 代码检查 - 根目录检查占位符
     "lint": "echo 'Linting will be implemented in individual packages'",
-
-    // 运行所有工作空间的代码检查
     "lint:all": "npm run lint --workspaces",
-
-    // 清理构建产物和依赖目录
     "clean": "rm -rf dist node_modules packages/*/dist packages/*/node_modules",
-
-    // 安装根目录和所有工作空间的依赖
     "install:all": "npm install && npm install --workspaces"
   },
   "devDependencies": {
-    // 根目录开发依赖
-    // - @types/inquirer: TypeScript类型定义，用于命令行交互
-    // - @vitest/coverage-v8: Vitest测试覆盖率插件
-    // - typescript: TypeScript编译器
-    // - vitest: 现代测试框架
     "@types/inquirer": "^9.0.9",
     "@vitest/coverage-v8": "^1.6.0",
     "typescript": "^5.6.3",

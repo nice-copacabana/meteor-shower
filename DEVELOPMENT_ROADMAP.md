@@ -658,10 +658,10 @@
 ## 📚 相关文档
 
 - [项目总结](./PROJECT_SUMMARY.md) - 项目整体概况和已完成功能
-- [用户分层设计](./USER_TIER_AND_PRICING_DESIGN.md) - M6模块详细设计
-- [能力验证设计](./CAPABILITY_VALIDATION_MODULE_DESIGN.md) - M7模块详细设计
-- [任务协调设计](./TASK_COORDINATION_MODULE_DESIGN.md) - M8模块详细设计
-- [部署指南](./DEPLOYMENT_GUIDE.md) - 部署和运维指南
+- [用户分层设计](./docs/design/USER_TIER_AND_PRICING_DESIGN.md) - M6模块详细设计
+- [能力验证设计](./docs/design/CAPABILITY_VALIDATION_MODULE_DESIGN.md) - M7模块详细设计
+- [任务协调设计](./docs/design/TASK_COORDINATION_MODULE_DESIGN.md) - M8模块详细设计
+- [部署指南](./docs/deployment/DEPLOYMENT_GUIDE.md) - 部署和运维指南
 
 ---
 

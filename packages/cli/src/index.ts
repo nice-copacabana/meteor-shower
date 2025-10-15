@@ -17,6 +17,7 @@ import { diffCommand } from './commands/diff.js';     // 差异对比命令
 import { applyCommand } from './commands/apply.js';    // 配置应用命令
 import { shareCommand } from './commands/share.js';    // 模板分享命令
 import { mcpTestCommand } from './commands/mcp.js';     // MCP服务测试命令
+import { accountCommand } from './commands/account.js'; // 账户管理命令
 
 // 创建命令行程序实例
 const program = new Command();
@@ -110,6 +111,26 @@ program
       await mcpTestCommand();
     } catch (error) {
       console.error(chalk.red('❌ MCP 测试失败:'), error);
+      process.exit(1);
+    }
+  });
+
+/**
+ * 账户管理命令：查看用户信息、配额、升级建议
+ * 功能：
+ * - info: 查看账户信息
+ * - quota: 查看配额使用情况
+ * - upgrade: 查看升级建议
+ * - compare: 对比不同层级
+ */
+program
+  .command('account [action]')
+  .description('账户管理 (info|quota|upgrade|compare)')
+  .action(async (action) => {
+    try {
+      await accountCommand({ action });
+    } catch (error) {
+      console.error(chalk.red('❌ 账户操作失败:'), error);
       process.exit(1);
     }
   });
