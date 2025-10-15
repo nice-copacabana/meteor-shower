@@ -83,7 +83,7 @@ meteor-shower/
 - **测试文件**: 15+ 个测试文件 (但多数模块无测试)
 - **示例项目**: 5+ 个示例
 - **文档**: 部分文档存在, 多处与实现不符
-- **整体完成度**: 45% (详见MODULE_STATUS_MATRIX.md)
+- **整体完成度**: 45% (详见[docs/status/MODULE_STATUS_MATRIX.md](./docs/status/MODULE_STATUS_MATRIX.md))
 
 ## 🎉 核心亮点 (实际完成)
 

@@ -265,12 +265,34 @@ npm run dev --workspace=packages/cloud-hub
 
 ## 📚 文档
 
-- [模块状态矩阵](./MODULE_STATUS_MATRIX.md) - 详细的模块实现状态
-- [CLI审计报告](./AUDIT_REPORT_CLI.md) - CLI模块审计
-- [Adapters审计报告](./AUDIT_REPORT_ADAPTERS.md) - 适配器审计
-- [Utils审计报告](./AUDIT_REPORT_UTILS.md) - 工具类审计
-- [审计标准](./AUDIT_STANDARDS.md) - 代码审计标准
-- [文档标准](./DOCUMENTATION_STANDARDS.md) - 文档编写标准
+### 核心文档
+- [项目概览](./PROJECT_SUMMARY.md) - 项目总体介绍
+- [开发路线图](./DEVELOPMENT_ROADMAP.md) - 详细开发计划
+
+### 技术文档
+- [架构文档](./docs/ARCHITECTURE.md) - 系统架构设计
+- [API文档](./docs/API.md) - API接口说明
+- [CLI指南](./docs/CLI_GUIDE.md) - CLI使用指南
+- [用户指南](./docs/USER_GUIDE.md) - 用户使用手册
+- [适配器指南](./docs/ADAPTER_GUIDE.md) - 适配器开发指南
+
+### 设计文档
+- [能力验证模块设计](./docs/design/CAPABILITY_VALIDATION_MODULE_DESIGN.md)
+- [任务协调模块设计](./docs/design/TASK_COORDINATION_MODULE_DESIGN.md)
+- [用户分层定价设计](./docs/design/USER_TIER_AND_PRICING_DESIGN.md)
+
+### 审计报告
+- [模块状态矩阵](./docs/status/MODULE_STATUS_MATRIX.md) - 详细的模块实现状态
+- [CLI审计报告](./docs/audit/AUDIT_REPORT_CLI.md) - CLI模块审计
+- [Adapters审计报告](./docs/audit/AUDIT_REPORT_ADAPTERS.md) - 适配器审计
+- [Utils审计报告](./docs/audit/AUDIT_REPORT_UTILS.md) - 工具类审计
+- [审计标准](./docs/audit/AUDIT_STANDARDS.md) - 代码审计标准
+
+### 规范与标准
+- [文档标准](./docs/standards/DOCUMENTATION_STANDARDS.md) - 文档编写标准
+
+### 部署文档
+- [部署指南](./docs/deployment/DEPLOYMENT_GUIDE.md) - 生产环境部署指南
 
 ## 🤝 贡献
 
