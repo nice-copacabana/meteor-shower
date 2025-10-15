@@ -64,6 +64,13 @@ export * from './billing/billing-manager.js';
 export * from './payment/refund-manager.js';
 export * from './payment/refund-ui.js';
 
+// 导出UI模块
+export * from './ui/feature-comparison.js';
+
+// 导出试用期模块
+export * from './trial/trial-manager.js';
+export * from './trial/trial-ui.js';
+
 // 便捷实例
 import { UserTierManager } from './tier-manager.js';
 import { DataGovernanceManager } from './data-governance.js';
