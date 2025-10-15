@@ -12,8 +12,7 @@ import { ConfigGenerator } from '@meteor-shower/utils';  // 配置生成器
 import fs from 'fs/promises';             // 文件系统操作
 import path from 'path';                  // 路径操作
 import ora from 'ora';                    // 加载动画
-import Database from 'better-sqlite3';    // SQLite数据库
-import { UserTierManager } from '@meteor-shower/enterprise/tier/tier-manager.js'; // 层级管理器
+import { createCLITierHelper } from '../helpers/tier-helper.js'; // 用户层级辅助
 
 /**
  * 初始化选项接口
@@ -47,18 +46,22 @@ export async function initCommand(options: InitOptions = {}) {
 
   // 步骤0: 检查用户层级和配额（如果已登录）
   const userId = process.env.METEOR_USER_ID;
+  const tierHelper = createCLITierHelper();
+  
   if (userId) {
-    const quotaCheck = await checkUserQuota(userId, 'create_config');
+    const quotaCheck = await tierHelper.checkToolQuota(userId);
     if (!quotaCheck.allowed) {
       console.log(chalk.red(`\n❌ 配额限制: ${quotaCheck.reason}`));
-      console.log(chalk.yellow('\n💡 提示: 升级到更高层级以获得更多配额'));
-      console.log(chalk.gray('   运行 ms account upgrade 查看升级选项\n'));
+      console.log('');
+      tierHelper.displayQuotaInfo(quotaCheck);
+      tierHelper.displayUpgradePrompt(quotaCheck);
+      tierHelper.close();
       return;
     }
     
     // 显示配额信息
     if (quotaCheck.remaining !== -1) {
-      console.log(chalk.gray(`  当前配额: ${quotaCheck.remaining} 个配置剩余\n`));
+      console.log(chalk.gray(`  剩余工具配置配额: ${quotaCheck.remaining}\n`));
     }
   }
 
@@ -136,6 +139,12 @@ export async function initCommand(options: InitOptions = {}) {
     await fs.writeFile(planPath, JSON.stringify(configPlan, null, 2), 'utf-8');
     
     spinner.succeed('配置计划已生成！');
+    
+    // 更新使用量统计
+    if (userId) {
+      await tierHelper.incrementToolUsage(userId);
+    }
+    tierHelper.close();
     
     // 显示摘要信息
     console.log(chalk.cyan('\n📊 配置摘要:'));
@@ -587,55 +596,4 @@ function getTemplateChoices(toolset: string[]): Array<{ name: string; value: str
   );
   
   return choices;
-}
-
-/**
- * 检查用户配额
- * @param userId 用户ID
- * @param operation 操作类型
- */
-async function checkUserQuota(
-  userId: string,
-  operation: 'create_template' | 'create_config' | 'share'
-): Promise<{ allowed: boolean; reason?: string; remaining: number }> {
-  try {
-    // 尝试连接数据库
-    const dbPath = process.env.METEOR_DB_PATH || path.join(os.homedir(), '.meteor-shower', 'meteor.db');
-    
-    // 检查数据库是否存在
-    try {
-      await fs.access(dbPath);
-    } catch {
-      // 数据库不存在，跳过配额检查
-      return { allowed: true, remaining: -1 };
-    }
-
-    const db = new Database(dbPath);
-    const tierManager = new UserTierManager(db);
-
-    let quotaResult;
-    switch (operation) {
-      case 'create_template':
-        quotaResult = tierManager.checkTemplateQuota(userId);
-        break;
-      case 'create_config':
-        quotaResult = tierManager.checkConfigQuota(userId);
-        break;
-      case 'share':
-        quotaResult = tierManager.checkShareQuota(userId);
-        break;
-    }
-
-    db.close();
-
-    return {
-      allowed: quotaResult.allowed,
-      reason: quotaResult.reason,
-      remaining: quotaResult.remaining
-    };
-  } catch (error) {
-    // 如果检查失败，允许操作（容错处理）
-    console.warn(chalk.yellow('⚠️  无法检查用户配额，继续执行...'));
-    return { allowed: true, remaining: -1 };
-  }
 }
