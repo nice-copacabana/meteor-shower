@@ -545,8 +545,6 @@ async function collectToolSpecificVariables(
   ]);
   
   Object.assign(variables, codeStyle);
-  
-  return variables;
 }
 
 /**

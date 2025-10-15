@@ -68,10 +68,12 @@ export class NoopAdapter implements Adapter {
 // ========== 适配器导出 ==========
 
 // 导出所有具体适配器实现
-export { GeminiAdapter } from './gemini.js';
-export { ClaudeAdapter } from './claude.js';
-export { CursorAdapter } from './cursor.js';
-export { OpenAIAdapter } from './openai.js';
+import { GeminiAdapter } from './gemini.js';
+import { ClaudeAdapter } from './claude.js';
+import { CursorAdapter } from './cursor.js';
+import { OpenAIAdapter } from './openai.js';
+
+export { GeminiAdapter, ClaudeAdapter, CursorAdapter, OpenAIAdapter };
 
 // ========== 工厂函数 ==========
 

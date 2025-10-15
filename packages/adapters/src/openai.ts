@@ -33,7 +33,7 @@ export class OpenAIAdapter implements Adapter {
     console.log(chalk.gray('📋 规划 OpenAI 配置变更...'));
     
     const projectRoot = process.cwd();
-    const changes = [];
+    const changes: Array<{ path: string; kind: 'create' | 'update' | 'delete' }> = [];
 
     // 检查文件是否存在
     const agentsPath = path.join(projectRoot, 'AGENTS.md');
