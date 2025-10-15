@@ -18,6 +18,7 @@ import { applyCommand } from './commands/apply.js';    // 配置应用命令
 import { shareCommand } from './commands/share.js';    // 模板分享命令
 import { mcpTestCommand } from './commands/mcp.js';     // MCP服务测试命令
 import { accountCommand } from './commands/account.js'; // 账户管理命令
+import { createCaseCommand } from './commands/case.js';  // 案例管理命令
 
 // 创建命令行程序实例
 const program = new Command();
@@ -134,5 +135,19 @@ program
       process.exit(1);
     }
   });
+
+/**
+ * 案例管理命令：能力验证案例库管理
+ * 功能：
+ * - create: 创建新案例
+ * - list: 列出案例
+ * - show: 显示案例详情
+ * - search: 搜索案例
+ * - edit: 编辑案例
+ * - delete: 删除案例
+ * - import/export: 导入导出案例
+ * - stats: 统计信息
+ */
+program.addCommand(createCaseCommand());
 
 program.parseAsync(process.argv);
