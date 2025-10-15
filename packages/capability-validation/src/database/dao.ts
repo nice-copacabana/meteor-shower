@@ -2,7 +2,7 @@
 // Task: M7 Phase1 - B1: 案例数据模型 - DAO层实现
 
 import Database from 'better-sqlite3';
-import { ValidationCase, CaseExecution, CaseCategory, DifficultyLevel } from '../index.js';
+import { ValidationCase, CaseExecution, CaseCategory, DifficultyLevel, CaseFilters, CaseVersion } from '../index.js';
 
 /**
  * ValidationCase DAO
@@ -89,26 +89,125 @@ export class ValidationCaseDAO {
   }
 
   /**
-   * 查询案例
+   * 高级查询案例（支持完整的CaseFilters）
    */
-  find(filter?: {
-    category?: CaseCategory;
-    difficulty?: DifficultyLevel;
-    author?: string;
-    isPublic?: boolean;
-    isCertified?: boolean;
-  }): ValidationCase[] {
+  findAdvanced(filter?: CaseFilters): ValidationCase[] {
     let sql = 'SELECT * FROM validation_cases WHERE 1=1';
     const params: any[] = [];
 
+    // 类别过滤（支持多选）
     if (filter?.category) {
-      sql += ' AND category = ?';
-      params.push(filter.category);
+      const categories = Array.isArray(filter.category) ? filter.category : [filter.category];
+      sql += ` AND category IN (${categories.map(() => '?').join(',')})`;
+      params.push(...categories);
+    }
+
+    // 难度过滤（支持多选）
+    if (filter?.difficulty) {
+      const difficulties = Array.isArray(filter.difficulty) ? filter.difficulty : [filter.difficulty];
+      sql += ` AND difficulty IN (${difficulties.map(() => '?').join(',')})`;
+      params.push(...difficulties);
+    }
+
+    // 标签过滤（任意匹配）
+    if (filter?.tags && filter.tags.length > 0) {
+      const tagConditions = filter.tags.map(() => 'tags LIKE ?').join(' OR ');
+      sql += ` AND (${tagConditions})`;
+      params.push(...filter.tags.map(tag => `%"${tag}"%`));
+    }
+
+    // 作者过滤
+    if (filter?.author) {
+      sql += ' AND author_name = ?';
+      params.push(filter.author);
+    }
+
+    // 公开状态过滤
+    if (filter?.isPublic !== undefined) {
+      sql += ' AND is_public = ?';
+      params.push(filter.isPublic ? 1 : 0);
+    }
+
+    // 认证状态过滤
+    if (filter?.isCertified !== undefined) {
+      sql += ' AND is_certified = ?';
+      params.push(filter.isCertified ? 1 : 0);
+    }
+
+    // 最低平均分过滤
+    if (filter?.minAverageScore !== undefined) {
+      sql += ' AND stats_average_score >= ?';
+      params.push(filter.minAverageScore);
+    }
+
+    // 最低通过率过滤
+    if (filter?.minPassRate !== undefined) {
+      sql += ' AND stats_pass_rate >= ?';
+      params.push(filter.minPassRate);
+    }
+
+    // 时间范围过滤
+    if (filter?.createdAfter) {
+      sql += ' AND created_at >= ?';
+      params.push(filter.createdAfter.getTime());
+    }
+
+    if (filter?.createdBefore) {
+      sql += ' AND created_at <= ?';
+      params.push(filter.createdBefore.getTime());
+    }
+
+    // 排序
+    const sortBy = filter?.sortBy || 'created_at';
+    const sortOrder = filter?.sortOrder || 'desc';
+    const columnMap: Record<string, string> = {
+      'createdAt': 'created_at',
+      'updatedAt': 'updated_at',
+      'submissions': 'stats_submissions',
+      'averageScore': 'stats_average_score',
+      'passRate': 'stats_pass_rate'
+    };
+    const sortColumn = columnMap[sortBy] || 'created_at';
+    sql += ` ORDER BY ${sortColumn} ${sortOrder.toUpperCase()}`;
+
+    // 分页
+    if (filter?.pageSize) {
+      const page = filter.page || 1;
+      const offset = (page - 1) * filter.pageSize;
+      sql += ' LIMIT ? OFFSET ?';
+      params.push(filter.pageSize, offset);
+    }
+
+    const stmt = this.db.prepare(sql);
+    const rows = stmt.all(...params) as any[];
+
+    return rows.map(row => this.rowToCase(row));
+  }
+
+  /**
+   * 统计案例总数（支持过滤）
+   */
+  count(filter?: CaseFilters): number {
+    let sql = 'SELECT COUNT(*) as count FROM validation_cases WHERE 1=1';
+    const params: any[] = [];
+
+    // 复用相同的过滤逻辑（不包含排序和分页）
+    if (filter?.category) {
+      const categories = Array.isArray(filter.category) ? filter.category : [filter.category];
+      sql += ` AND category IN (${categories.map(() => '?').join(',')})`;
+      params.push(...categories);
     }
 
     if (filter?.difficulty) {
-      sql += ' AND difficulty = ?';
-      params.push(filter.difficulty);
+      const difficulties = Array.isArray(filter.difficulty) ? filter.difficulty : [filter.difficulty];
+      sql += ` AND difficulty IN (${difficulties.map(() => '?').join(',')})`;
+      params.push(...difficulties);
+    }
+
+    if (filter?.tags && filter.tags.length > 0) {
+      const tagConditions = filter.tags.map(() => 'tags LIKE ?').join(' OR ');
+      sql += ` AND (${tagConditions})`;
+      params.push(...filter.tags.map(tag => `%"${tag}"%`));
     }
 
     if (filter?.author) {
@@ -126,12 +225,78 @@ export class ValidationCaseDAO {
       params.push(filter.isCertified ? 1 : 0);
     }
 
-    sql += ' ORDER BY created_at DESC';
+    const stmt = this.db.prepare(sql);
+    const result = stmt.get(...params) as any;
+    return result.count;
+  }
+
+  /**
+   * 获取类别统计信息
+   */
+  getCategoryStats(category?: CaseCategory): Array<{
+    category: CaseCategory;
+    totalCases: number;
+    averageScore: number;
+    passRate: number;
+    difficultyDistribution: Record<string, number>;
+  }> {
+    let sql = `
+      SELECT 
+        category,
+        COUNT(*) as total_cases,
+        AVG(stats_average_score) as avg_score,
+        AVG(stats_pass_rate) as avg_pass_rate
+      FROM validation_cases
+      WHERE 1=1
+    `;
+    const params: any[] = [];
+
+    if (category) {
+      sql += ' AND category = ?';
+      params.push(category);
+    }
+
+    sql += ' GROUP BY category';
 
     const stmt = this.db.prepare(sql);
     const rows = stmt.all(...params) as any[];
 
-    return rows.map(row => this.rowToCase(row));
+    return rows.map(row => {
+      // 获取该类别的难度分布
+      const diffStmt = this.db.prepare(`
+        SELECT difficulty, COUNT(*) as count
+        FROM validation_cases
+        WHERE category = ?
+        GROUP BY difficulty
+      `);
+      const diffRows = diffStmt.all(row.category) as any[];
+      const difficultyDistribution: Record<string, number> = {};
+      diffRows.forEach(dr => {
+        difficultyDistribution[dr.difficulty] = dr.count;
+      });
+
+      return {
+        category: row.category as CaseCategory,
+        totalCases: row.total_cases,
+        averageScore: row.avg_score || 0,
+        passRate: row.avg_pass_rate || 0,
+        difficultyDistribution
+      };
+    });
+  }
+
+  /**
+   * 查询案例（基础版本，保持向后兼容）
+   */
+  find(filter?: {
+    category?: CaseCategory;
+    difficulty?: DifficultyLevel;
+    author?: string;
+    isPublic?: boolean;
+    isCertified?: boolean;
+  }): ValidationCase[] {
+    // 转换为高级过滤器格式
+    return this.findAdvanced(filter);
   }
 
   /**
@@ -381,5 +546,87 @@ export class CaseExecutionDAO {
       userRating: row.user_rating || undefined,
       userFeedback: row.user_feedback || undefined,
     };
+  }
+}
+
+/**
+ * CaseVersion DAO
+ */
+export class CaseVersionDAO {
+  constructor(private db: Database.Database) {}
+
+  /**
+   * 创建版本记录
+   */
+  create(versionData: Omit<CaseVersion, 'createdAt'>, snapshotData: ValidationCase): CaseVersion {
+    const id = `ver_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = Date.now();
+    
+    const stmt = this.db.prepare(`
+      INSERT INTO case_versions (
+        id, case_id, version, changes, created_at, created_by, snapshot_data
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    stmt.run(
+      id,
+      versionData.caseId,
+      versionData.version,
+      versionData.changes,
+      now,
+      versionData.createdBy,
+      JSON.stringify(snapshotData)
+    );
+
+    return {
+      ...versionData,
+      createdAt: new Date(now)
+    };
+  }
+
+  /**
+   * 根据案例ID获取版本历史
+   */
+  findByCaseId(caseId: string): CaseVersion[] {
+    const stmt = this.db.prepare(`
+      SELECT id, case_id, version, changes, created_at, created_by
+      FROM case_versions
+      WHERE case_id = ?
+      ORDER BY created_at DESC
+    `);
+    const rows = stmt.all(caseId) as any[];
+    
+    return rows.map(row => ({
+      version: row.version,
+      caseId: row.case_id,
+      changes: row.changes,
+      createdAt: new Date(row.created_at),
+      createdBy: row.created_by
+    }));
+  }
+
+  /**
+   * 获取特定版本的快照数据
+   */
+  getSnapshot(caseId: string, version: string): ValidationCase | null {
+    const stmt = this.db.prepare(`
+      SELECT snapshot_data
+      FROM case_versions
+      WHERE case_id = ? AND version = ?
+    `);
+    const row = stmt.get(caseId, version) as any;
+    
+    if (!row) return null;
+    
+    return JSON.parse(row.snapshot_data);
+  }
+
+  /**
+   * 删除案例的所有版本
+   */
+  deleteByCaseId(caseId: string): boolean {
+    const stmt = this.db.prepare('DELETE FROM case_versions WHERE case_id = ?');
+    const result = stmt.run(caseId);
+    return result.changes > 0;
   }
 }

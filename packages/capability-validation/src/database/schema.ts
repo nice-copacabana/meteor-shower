@@ -59,6 +59,10 @@ export const VALIDATION_CASE_SCHEMA = `
   CREATE INDEX IF NOT EXISTS idx_cases_author ON validation_cases(author_name);
   CREATE INDEX IF NOT EXISTS idx_cases_public ON validation_cases(is_public);
   CREATE INDEX IF NOT EXISTS idx_cases_certified ON validation_cases(is_certified);
+  CREATE INDEX IF NOT EXISTS idx_cases_created_at ON validation_cases(created_at);
+  CREATE INDEX IF NOT EXISTS idx_cases_updated_at ON validation_cases(updated_at);
+  CREATE INDEX IF NOT EXISTS idx_cases_avg_score ON validation_cases(stats_average_score);
+  CREATE INDEX IF NOT EXISTS idx_cases_pass_rate ON validation_cases(stats_pass_rate);
 `;
 
 /**
@@ -102,9 +106,32 @@ export const CASE_EXECUTION_SCHEMA = `
 `;
 
 /**
+ * CaseVersion 数据库表Schema（版本管理）
+ */
+export const CASE_VERSION_SCHEMA = `
+  CREATE TABLE IF NOT EXISTS case_versions (
+    id TEXT PRIMARY KEY,
+    case_id TEXT NOT NULL,
+    version TEXT NOT NULL,
+    changes TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    created_by TEXT NOT NULL,
+    
+    -- 快照数据（完整的案例JSON）
+    snapshot_data TEXT NOT NULL,
+    
+    FOREIGN KEY (case_id) REFERENCES validation_cases(id) ON DELETE CASCADE
+  );
+  
+  CREATE INDEX IF NOT EXISTS idx_versions_case ON case_versions(case_id);
+  CREATE INDEX IF NOT EXISTS idx_versions_created ON case_versions(created_at);
+`;
+
+/**
  * 初始化所有表
  */
 export function initializeCaseDatabase(db: Database.Database): void {
   db.exec(VALIDATION_CASE_SCHEMA);
   db.exec(CASE_EXECUTION_SCHEMA);
+  db.exec(CASE_VERSION_SCHEMA);
 }

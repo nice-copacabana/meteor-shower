@@ -15,7 +15,7 @@
 
 import Database from 'better-sqlite3';
 import { nanoid } from 'nanoid';
-import { ValidationCaseDAO, CaseExecutionDAO } from './database/dao.js';
+import { ValidationCaseDAO, CaseExecutionDAO, CaseVersionDAO } from './database/dao.js';
 import { initializeCaseDatabase } from './database/schema.js';
 
 /**
@@ -332,12 +332,14 @@ export class CaseManager {
   private db: Database.Database;
   private caseDAO: ValidationCaseDAO;
   private executionDAO: CaseExecutionDAO;
+  private versionDAO: CaseVersionDAO;
 
   constructor(dbPath: string = ':memory:') {
     this.db = new Database(dbPath);
     initializeCaseDatabase(this.db);
     this.caseDAO = new ValidationCaseDAO(this.db);
     this.executionDAO = new CaseExecutionDAO(this.db);
+    this.versionDAO = new CaseVersionDAO(this.db);
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
@@ -377,38 +379,22 @@ export class CaseManager {
   }
 
   async getCases(filter?: CaseFilters): Promise<ValidationCase[]> {
-    const dbFilter: any = {};
-    
-    if (filter?.category) {
-      dbFilter.category = Array.isArray(filter.category) 
-        ? filter.category[0] // TODO: 支持多选
-        : filter.category;
-    }
-    
-    if (filter?.difficulty) {
-      dbFilter.difficulty = Array.isArray(filter.difficulty)
-        ? filter.difficulty[0] // TODO: 支持多选
-        : filter.difficulty;
-    }
-    
-    if (filter?.author) {
-      dbFilter.author = filter.author;
-    }
-    
-    return this.caseDAO.find(dbFilter);
+    // 使用高级查询方法
+    return this.caseDAO.findAdvanced(filter);
   }
 
   async searchCases(options: SearchOptions): Promise<ValidationCase[]> {
-    // TODO: 实现全文搜索
-    const { query, filters, limit = 20 } = options;
+    const { query, fields = ['title', 'description', 'tags'], filters, limit = 20 } = options;
     const allCases = await this.getCases(filters);
     
-    // 简单的关键词匹配
-    return allCases.filter(c => 
-      c.title.toLowerCase().includes(query.toLowerCase()) ||
-      c.description.toLowerCase().includes(query.toLowerCase()) ||
-      c.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
-    ).slice(0, limit);
+    // 关键词匹配（未来可集成全文搜索引擎）
+    const queryLower = query.toLowerCase();
+    return allCases.filter(c => {
+      if (fields.includes('title') && c.title.toLowerCase().includes(queryLower)) return true;
+      if (fields.includes('description') && c.description.toLowerCase().includes(queryLower)) return true;
+      if (fields.includes('tags') && c.tags.some(tag => tag.toLowerCase().includes(queryLower))) return true;
+      return false;
+    }).slice(0, limit);
   }
 
   async getCaseById(caseId: string): Promise<ValidationCase | null> {
@@ -447,16 +433,55 @@ export class CaseManager {
    * 获取案例版本历史
    */
   async getCaseVersions(caseId: string): Promise<CaseVersion[]> {
-    // TODO: 实现版本管理
-    return [];
+    return this.versionDAO.findByCaseId(caseId);
   }
   
   /**
    * 回滚到指定版本
    */
   async revertToVersion(caseId: string, version: string): Promise<ValidationCase> {
-    // TODO: 实现版本回滚
-    throw new Error('功能开发中');
+    // 获取版本快照
+    const snapshot = this.versionDAO.getSnapshot(caseId, version);
+    if (!snapshot) {
+      throw new Error(`未找到版本 ${version}`);
+    }
+    
+    // 先保存当前版本作为备份
+    const currentCase = await this.getCaseById(caseId);
+    if (currentCase) {
+      await this.createVersion(caseId, `backup_${Date.now()}`, `回滚前的备份`, 'system');
+    }
+    
+    // 更新案例为快照内容
+    const success = this.caseDAO.update(caseId, snapshot);
+    if (!success) {
+      throw new Error(`回滚失败: 无法更新案例 ${caseId}`);
+    }
+    
+    // 创建回滚记录
+    await this.createVersion(caseId, snapshot.version, `回滚到版本 ${version}`, 'system');
+    
+    const updated = this.caseDAO.findById(caseId);
+    if (!updated) {
+      throw new Error(`回滚后无法找到案例 ${caseId}`);
+    }
+    
+    return updated;
+  }
+  
+  /**
+   * 创建版本记录（内部使用）
+   */
+  private async createVersion(caseId: string, version: string, changes: string, createdBy: string): Promise<void> {
+    const caseData = await this.getCaseById(caseId);
+    if (!caseData) {
+      throw new Error(`案例 ${caseId} 不存在`);
+    }
+    
+    this.versionDAO.create(
+      { caseId, version, changes, createdBy },
+      caseData
+    );
   }
   
   /**
@@ -483,8 +508,14 @@ export class CaseManager {
     passRate: number;
     difficultyDistribution: Record<DifficultyLevel, number>;
   }[]> {
-    // TODO: 实现统计聚合
-    return [];
+    return this.caseDAO.getCategoryStats(category);
+  }
+  
+  /**
+   * 获取案例总数（支持过滤）
+   */
+  async getCaseCount(filter?: CaseFilters): Promise<number> {
+    return this.caseDAO.count(filter);
   }
   
   /**
