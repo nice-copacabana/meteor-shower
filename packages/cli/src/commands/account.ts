@@ -3,12 +3,10 @@
 
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import Database from 'better-sqlite3';
 import path from 'path';
 import os from 'os';
 import Table from 'cli-table3';
-import { UserTierManager } from '@meteor-shower/enterprise/tier/tier-manager.js';
-import { UserTier } from '@meteor-shower/enterprise/database/schema.js';
+import { createDatabaseManager, UserTier } from 'meteor-shower-user-tier';
 
 /**
  * 账户命令选项
@@ -22,6 +20,11 @@ export interface AccountOptions {
  * 查看用户信息、配额、升级建议
  */
 export async function accountCommand(options: AccountOptions = {}) {
+  console.log(chalk.yellow('\n⚠️  account命令正在重构中，暂时不可用'));
+  console.log(chalk.gray('提示: 该功能将在下一版本中提供\n'));
+  return;
+  
+  /* TODO: 重构为使用新的DatabaseManager
   const userId = process.env.METEOR_USER_ID;
   
   if (!userId) {
@@ -76,12 +79,14 @@ export async function accountCommand(options: AccountOptions = {}) {
   } catch (error: any) {
     console.error(chalk.red(`\n❌ 错误: ${error.message}`));
   }
+  */
 }
 
+/*
 /**
  * 显示账户信息
  */
-async function showAccountInfo(tierManager: UserTierManager, userId: string): Promise<void> {
+async function showAccountInfo(tierManager: any, userId: string): Promise<void> {
   console.log(chalk.cyan('\n📊 账户信息\n'));
 
   const quotas = tierManager.getUserQuotas(userId);
@@ -374,3 +379,4 @@ function generateProgressBar(percentage: number, length: number = 20): string {
   
   return color('█'.repeat(filled)) + chalk.gray('░'.repeat(empty));
 }
+*/

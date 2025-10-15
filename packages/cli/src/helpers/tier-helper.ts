@@ -11,8 +11,8 @@ import chalk from 'chalk';
 import path from 'path';
 import os from 'os';
 import fs from 'fs/promises';
-import { DatabaseManager, createDatabaseManager } from '@meteor-shower/user-tier';
-import { UserTier } from '@meteor-shower/user-tier';
+import { DatabaseManager, createDatabaseManager } from 'meteor-shower-user-tier';
+import { UserTier } from 'meteor-shower-user-tier';
 
 /**
  * 配额检查结果
