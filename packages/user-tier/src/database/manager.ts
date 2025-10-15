@@ -12,6 +12,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { initializeDatabase, MIGRATIONS } from './schema.js';
 import { UserDAO, SubscriptionDAO, UsageStatsDAO, OrganizationDAO } from './dao.js';
+import { AuditLogManager, AUDIT_LOG_SCHEMA } from '../permissions/audit-manager.js';
 
 /**
  * 数据库管理器配置
@@ -48,6 +49,7 @@ export class DatabaseManager {
   public subscriptions!: SubscriptionDAO;
   public usageStats!: UsageStatsDAO;
   public organizations!: OrganizationDAO;
+  public auditLogs!: AuditLogManager;
 
   constructor(config: DatabaseConfig) {
     this.config = config;
@@ -89,6 +91,7 @@ export class DatabaseManager {
     this.subscriptions = new SubscriptionDAO(this.db);
     this.usageStats = new UsageStatsDAO(this.db);
     this.organizations = new OrganizationDAO(this.db);
+    this.auditLogs = new AuditLogManager(this.db);
 
     console.log('✅ 数据库连接成功');
   }
@@ -112,6 +115,9 @@ export class DatabaseManager {
 
     // 初始化数据库结构
     initializeDatabase(this.db);
+    
+    // 创建审计日志表
+    this.db.exec(AUDIT_LOG_SCHEMA);
 
     console.log('✅ 数据库初始化完成');
   }
