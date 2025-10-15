@@ -26,6 +26,14 @@ app.get('/config-manager', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/config-manager.html'));
 });
 
+app.get('/pricing', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/pricing.html'));
+});
+
+app.get('/upgrade', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/upgrade.html'));
+});
+
 // API 路由
 app.get('/api/status', (req, res) => {
   res.json({

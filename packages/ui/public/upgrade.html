@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>升级账户 - meteor-shower</title>
+    <link rel="stylesheet" href="/css/upgrade.css">
+</head>
+<body>
+    <div class="upgrade-container">
+        <!-- 步骤指示器 -->
+        <div class="steps-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">选择方案</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">确认信息</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">支付</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">完成</div>
+            </div>
+        </div>
+
+        <!-- 步骤1: 选择方案 -->
+        <div class="step-content" id="step1" style="display: block;">
+            <h2>选择您的升级方案</h2>
+            <p class="step-description">选择最适合您的方案，随时可以升级或降级</p>
+            
+            <div class="plan-comparison">
+                <!-- 当前方案 -->
+                <div class="current-plan-card">
+                    <div class="plan-badge current">当前方案</div>
+                    <h3 id="currentPlanName">免费版</h3>
+                    <div class="plan-price">¥0/月</div>
+                    <ul class="plan-features">
+                        <li>3 个工具配置</li>
+                        <li>5 个云端模板</li>
+                        <li>20 次/月验证</li>
+                        <li>100MB 存储</li>
+                    </ul>
+                </div>
+
+                <div class="arrow-icon">→</div>
+
+                <!-- 升级方案选择 -->
+                <div class="upgrade-plans">
+                    <div class="plan-card" data-plan="pro">
+                        <div class="plan-badge recommended">推荐</div>
+                        <h3>专业版</h3>
+                        <div class="plan-price-toggle">
+                            <div class="price-option active" data-cycle="monthly">
+                                <div class="price">¥99</div>
+                                <div class="cycle">/月</div>
+                            </div>
+                            <div class="price-option" data-cycle="yearly">
+                                <div class="price">¥999</div>
+                                <div class="cycle">/年</div>
+                                <div class="save-label">省17%</div>
+                            </div>
+                        </div>
+                        <ul class="plan-features">
+                            <li class="highlight">无限工具配置</li>
+                            <li class="highlight">无限云端模板</li>
+                            <li>500 次/月验证</li>
+                            <li>10GB 存储</li>
+                            <li>AI 增强功能</li>
+                            <li>7天云端备份</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('pro', 'monthly')">
+                            选择此方案
+                        </button>
+                    </div>
+
+                    <div class="plan-card" data-plan="team">
+                        <h3>团队版</h3>
+                        <div class="plan-price-toggle">
+                            <div class="price-option active" data-cycle="monthly">
+                                <div class="price">¥299</div>
+                                <div class="cycle">/用户/月</div>
+                            </div>
+                            <div class="price-option" data-cycle="yearly">
+                                <div class="price">¥2,999</div>
+                                <div class="cycle">/用户/年</div>
+                                <div class="save-label">省17%</div>
+                            </div>
+                        </div>
+                        <div class="seats-selector">
+                            <label>席位数量:</label>
+                            <input type="number" id="teamSeats" min="3" max="50" value="5">
+                            <span class="seats-hint">3-50 个席位</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li>专业版全部功能</li>
+                            <li class="highlight">团队协作</li>
+                            <li>2000 次/月验证</li>
+                            <li>100GB 存储</li>
+                            <li>30天云端备份</li>
+                            <li>90天审计日志</li>
+                        </ul>
+                        <button class="select-plan-btn" onclick="selectPlan('team', 'monthly')">
+                            选择此方案
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="billing-cycle-selector">
+                <label class="cycle-option">
+                    <input type="radio" name="billing" value="monthly" checked>
+                    <span>月付</span>
+                </label>
+                <label class="cycle-option">
+                    <input type="radio" name="billing" value="yearly">
+                    <span>年付 (节省17%)</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- 步骤2: 确认信息 -->
+        <div class="step-content" id="step2" style="display: none;">
+            <h2>确认订单信息</h2>
+            <p class="step-description">请核对您的订单信息</p>
+            
+            <div class="order-summary">
+                <div class="summary-section">
+                    <h3>订单详情</h3>
+                    <div class="summary-item">
+                        <span>升级方案:</span>
+                        <strong id="selectedPlan">专业版</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>计费周期:</span>
+                        <strong id="selectedCycle">月付</strong>
+                    </div>
+                    <div class="summary-item" id="seatsInfo" style="display: none;">
+                        <span>席位数量:</span>
+                        <strong id="selectedSeats">5</strong>
+                    </div>
+                    <div class="summary-item trial-info">
+                        <span>免费试用:</span>
+                        <strong>7天</strong>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3>价格明细</h3>
+                    <div class="price-breakdown">
+                        <div class="price-item">
+                            <span>订阅费用</span>
+                            <span id="subscriptionFee">¥99</span>
+                        </div>
+                        <div class="price-item discount" id="discountItem" style="display: none;">
+                            <span>年付优惠</span>
+                            <span id="discountAmount">-¥189</span>
+                        </div>
+                        <div class="price-item total">
+                            <span>应付总额</span>
+                            <strong id="totalAmount">¥99</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3>升级后您将获得</h3>
+                    <ul class="benefits-list" id="upgradeBenefits">
+                        <li>✓ 立即解锁所有专业版功能</li>
+                        <li>✓ 7天免费试用，随时可取消</li>
+                        <li>✓ 无限工具配置和模板</li>
+                        <li>✓ AI 增强功能</li>
+                        <li>✓ 云端备份保护</li>
+                    </ul>
+                </div>
+
+                <div class="summary-section">
+                    <h3>账单信息</h3>
+                    <form class="billing-form" id="billingForm">
+                        <div class="form-group">
+                            <label>账单邮箱</label>
+                            <input type="email" id="billingEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="needInvoice">
+                                需要发票
+                            </label>
+                        </div>
+                        <div id="invoiceInfo" style="display: none;">
+                            <div class="form-group">
+                                <label>发票抬头</label>
+                                <input type="text" id="invoiceTitle" placeholder="公司名称或个人姓名">
+                            </div>
+                            <div class="form-group">
+                                <label>税号</label>
+                                <input type="text" id="taxId" placeholder="统一社会信用代码">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="goToStep(1)">上一步</button>
+                <button class="btn-primary" onclick="goToStep(3)">继续</button>
+            </div>
+        </div>
+
+        <!-- 步骤3: 支付 -->
+        <div class="step-content" id="step3" style="display: none;">
+            <h2>选择支付方式</h2>
+            <p class="step-description">安全的支付处理，支持多种支付方式</p>
+            
+            <div class="payment-methods">
+                <div class="payment-method" data-method="alipay">
+                    <input type="radio" name="payment" id="alipay" value="alipay" checked>
+                    <label for="alipay">
+                        <div class="method-icon">
+                            <img src="/images/alipay.svg" alt="支付宝" onerror="this.style.display='none'">
+                            <span>支付宝</span>
+                        </div>
+                        <div class="method-desc">推荐使用</div>
+                    </label>
+                </div>
+
+                <div class="payment-method" data-method="wechat">
+                    <input type="radio" name="payment" id="wechat" value="wechat">
+                    <label for="wechat">
+                        <div class="method-icon">
+                            <img src="/images/wechat.svg" alt="微信支付" onerror="this.style.display='none'">
+                            <span>微信支付</span>
+                        </div>
+                        <div class="method-desc">扫码支付</div>
+                    </label>
+                </div>
+
+                <div class="payment-method" data-method="stripe">
+                    <input type="radio" name="payment" id="stripe" value="stripe">
+                    <label for="stripe">
+                        <div class="method-icon">
+                            <img src="/images/stripe.svg" alt="信用卡" onerror="this.style.display='none'">
+                            <span>信用卡</span>
+                        </div>
+                        <div class="method-desc">国际支付</div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="payment-summary">
+                <div class="summary-row">
+                    <span>订单金额:</span>
+                    <strong id="paymentAmount">¥99</strong>
+                </div>
+                <div class="trial-reminder">
+                    <span class="icon">ℹ️</span>
+                    <span>7天免费试用期内可随时取消，不会产生费用</span>
+                </div>
+            </div>
+
+            <div class="terms-agreement">
+                <label>
+                    <input type="checkbox" id="agreeTerms" required>
+                    我已阅读并同意 <a href="/terms" target="_blank">服务条款</a> 和 <a href="/privacy" target="_blank">隐私政策</a>
+                </label>
+            </div>
+
+            <div class="step-actions">
+                <button class="btn-secondary" onclick="goToStep(2)">上一步</button>
+                <button class="btn-primary" onclick="processPayment()" id="payButton">
+                    确认支付
+                </button>
+            </div>
+        </div>
+
+        <!-- 步骤4: 完成 -->
+        <div class="step-content" id="step4" style="display: none;">
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <h2>升级成功！</h2>
+                <p>恭喜您成功升级到 <strong id="finalPlanName">专业版</strong></p>
+                
+                <div class="success-details">
+                    <div class="detail-item">
+                        <span class="label">订单号:</span>
+                        <span class="value" id="orderId">ORD-20251015-XXXX</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">生效时间:</span>
+                        <span class="value" id="effectiveDate">立即生效</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">试用期至:</span>
+                        <span class="value" id="trialEndDate">2025-10-22</span>
+                    </div>
+                </div>
+
+                <div class="next-steps">
+                    <h3>接下来您可以:</h3>
+                    <ul>
+                        <li>✓ 立即使用无限工具配置功能</li>
+                        <li>✓ 创建和分享更多云端模板</li>
+                        <li>✓ 体验 AI 增强功能</li>
+                        <li>✓ 查看账单和管理订阅</li>
+                    </ul>
+                </div>
+
+                <div class="success-actions">
+                    <button class="btn-primary" onclick="window.location.href='/dashboard'">
+                        前往控制台
+                    </button>
+                    <button class="btn-secondary" onclick="window.location.href='/account/subscription'">
+                        管理订阅
+                    </button>
+                </div>
+
+                <div class="support-info">
+                    <p>如有任何问题，请随时<a href="/support">联系客服</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 取消升级提示 -->
+        <div class="cancel-notice">
+            <a href="#" onclick="confirmCancel(); return false;">取消升级</a>
+        </div>
+    </div>
+
+    <script src="/js/upgrade.js"></script>
+</body>
+</html>

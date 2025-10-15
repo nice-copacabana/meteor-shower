@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定价方案 - meteor-shower</title>
+    <link rel="stylesheet" href="/css/pricing.css">
+</head>
+<body>
+    <div class="pricing-container">
+        <header class="pricing-header">
+            <h1>选择适合您的方案</h1>
+            <p class="subtitle">无论您是个人开发者还是企业团队，都能找到合适的选择</p>
+            
+            <!-- 计费周期切换 -->
+            <div class="billing-toggle">
+                <span class="toggle-label">月付</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="billingToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">年付 <span class="save-badge">省17%</span></span>
+            </div>
+        </header>
+
+        <!-- 定价卡片 -->
+        <div class="pricing-cards">
+            <!-- 免费版 -->
+            <div class="pricing-card free">
+                <div class="card-header">
+                    <h3>免费版</h3>
+                    <p class="card-subtitle">适合个人探索</p>
+                </div>
+                <div class="card-price">
+                    <span class="price">¥0</span>
+                    <span class="period">/永久免费</span>
+                </div>
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>最多 3 个工具配置</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>5 个云端模板</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>每月 20 次能力验证</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>100MB 存储空间</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>公开数据可见性</span>
+                    </li>
+                    <li class="feature-item disabled">
+                        <span class="icon">✗</span>
+                        <span>云端备份</span>
+                    </li>
+                    <li class="feature-item disabled">
+                        <span class="icon">✗</span>
+                        <span>AI 增强功能</span>
+                    </li>
+                </ul>
+                <button class="cta-button free-button">开始使用</button>
+            </div>
+
+            <!-- 专业版 -->
+            <div class="pricing-card pro recommended">
+                <div class="recommended-badge">推荐</div>
+                <div class="card-header">
+                    <h3>专业版</h3>
+                    <p class="card-subtitle">适合专业开发者</p>
+                </div>
+                <div class="card-price">
+                    <span class="price monthly">¥99</span>
+                    <span class="price yearly" style="display:none;">¥999</span>
+                    <span class="period monthly">/月</span>
+                    <span class="period yearly" style="display:none;">/年</span>
+                </div>
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span><strong>无限</strong>工具配置</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span><strong>无限</strong>云端模板</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>每月 500 次能力验证</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>10GB 存储空间</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>私有数据保护</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>7天云端备份</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>AI 增强功能</span>
+                    </li>
+                    <li class="feature-item disabled">
+                        <span class="icon">✗</span>
+                        <span>团队协作</span>
+                    </li>
+                </ul>
+                <button class="cta-button pro-button">立即升级</button>
+                <p class="trial-notice">7天免费试用</p>
+            </div>
+
+            <!-- 团队版 -->
+            <div class="pricing-card team">
+                <div class="card-header">
+                    <h3>团队版</h3>
+                    <p class="card-subtitle">适合小型团队</p>
+                </div>
+                <div class="card-price">
+                    <span class="price monthly">¥299</span>
+                    <span class="price yearly" style="display:none;">¥2,999</span>
+                    <span class="period monthly">/用户/月</span>
+                    <span class="period yearly" style="display:none;">/用户/年</span>
+                </div>
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>专业版全部功能</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>每月 2000 次能力验证</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>100GB 存储空间</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>团队协作功能</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>30天云端备份</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>90天审计日志</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>3-50 个席位</span>
+                    </li>
+                    <li class="feature-item disabled">
+                        <span class="icon">✗</span>
+                        <span>SSO 单点登录</span>
+                    </li>
+                </ul>
+                <button class="cta-button team-button">联系销售</button>
+            </div>
+
+            <!-- 企业版 -->
+            <div class="pricing-card enterprise">
+                <div class="card-header">
+                    <h3>企业版</h3>
+                    <p class="card-subtitle">适合大型企业</p>
+                </div>
+                <div class="card-price">
+                    <span class="price">定制</span>
+                    <span class="period">联系我们</span>
+                </div>
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>团队版全部功能</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span><strong>无限</strong>能力验证</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>无限存储空间</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>SSO 单点登录</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>RBAC 权限控制</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>365天审计日志</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>99.9% SLA 保障</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="icon">✓</span>
+                        <span>专属技术支持</span>
+                    </li>
+                </ul>
+                <button class="cta-button enterprise-button">联系我们</button>
+            </div>
+        </div>
+
+        <!-- 功能对比表 -->
+        <section class="comparison-section">
+            <h2>详细功能对比</h2>
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="feature-name">功能特性</th>
+                            <th>免费版</th>
+                            <th class="recommended-col">专业版</th>
+                            <th>团队版</th>
+                            <th>企业版</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">工具配置数量</td>
+                            <td>3个</td>
+                            <td class="recommended-col">无限</td>
+                            <td>无限</td>
+                            <td>无限</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">云端模板</td>
+                            <td>5个</td>
+                            <td class="recommended-col">无限</td>
+                            <td>无限</td>
+                            <td>无限</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">月验证次数</td>
+                            <td>20次</td>
+                            <td class="recommended-col">500次</td>
+                            <td>2000次</td>
+                            <td>无限</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">存储空间</td>
+                            <td>100MB</td>
+                            <td class="recommended-col">10GB</td>
+                            <td>100GB</td>
+                            <td>无限</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">云端备份</td>
+                            <td>-</td>
+                            <td class="recommended-col">7天</td>
+                            <td>30天</td>
+                            <td>无限</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">审计日志</td>
+                            <td>-</td>
+                            <td class="recommended-col">-</td>
+                            <td>90天</td>
+                            <td>365天</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">AI 增强功能</td>
+                            <td>-</td>
+                            <td class="recommended-col">✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">团队协作</td>
+                            <td>-</td>
+                            <td class="recommended-col">-</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">SSO 单点登录</td>
+                            <td>-</td>
+                            <td class="recommended-col">-</td>
+                            <td>-</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">SLA 保障</td>
+                            <td>-</td>
+                            <td class="recommended-col">-</td>
+                            <td>-</td>
+                            <td>99.9%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 用户评价 -->
+        <section class="testimonials-section">
+            <h2>用户评价</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"meteor-shower 大幅提升了我的开发效率，AI 工具管理从未如此简单。"</p>
+                    <div class="author">
+                        <strong>张开发</strong>
+                        <span>独立开发者</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"团队版的协作功能非常强大，我们整个团队的配置管理都统一了。"</p>
+                    <div class="author">
+                        <strong>李经理</strong>
+                        <span>科技公司技术负责人</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"企业版的安全和合规功能让我们可以放心使用，技术支持也很到位。"</p>
+                    <div class="author">
+                        <strong>王总监</strong>
+                        <span>金融企业 CTO</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+            <h2>常见问题</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">可以随时更改订阅吗？</h3>
+                    <p class="faq-answer">当然可以！您可以随时升级或降级订阅计划。升级立即生效，降级在当前周期结束后生效。</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">支持哪些支付方式？</h3>
+                    <p class="faq-answer">我们支持支付宝、微信支付和信用卡支付，为企业客户提供对公转账选项。</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">有退款政策吗？</h3>
+                    <p class="faq-answer">我们提供30天无理由退款保障。如果您对服务不满意，可以申请全额退款。</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">企业版如何定价？</h3>
+                    <p class="faq-answer">企业版采用定制化定价，根据席位数量、功能需求和支持级别灵活制定。请联系我们的销售团队获取报价。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA 区域 -->
+        <section class="final-cta">
+            <h2>准备好开始了吗？</h2>
+            <p>立即注册免费账户，体验 meteor-shower 的强大功能</p>
+            <button class="cta-button large-button">免费开始</button>
+        </section>
+    </div>
+
+    <script src="/js/pricing.js"></script>
+</body>
+</html>
