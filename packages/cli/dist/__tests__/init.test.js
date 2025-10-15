@@ -26,8 +26,9 @@ describe('initCommand', () => {
             .mockResolvedValueOnce({ projectName: 'test-project', persona: 'test persona' });
         const result = await initCommand();
         expect(result).toBeDefined();
-        expect(result.toolset).toEqual(['gemini', 'claude']);
-        expect(result.template).toBe('basic');
+        expect(result).toBeDefined();
+        expect(result?.toolset).toEqual(['gemini', 'claude']);
+        expect(result?.template).toBe('basic');
     });
     it('should handle empty toolset selection', async () => {
         const mockInquirer = await import('inquirer');
@@ -36,6 +37,7 @@ describe('initCommand', () => {
             .mockResolvedValueOnce({ template: 'basic' })
             .mockResolvedValueOnce({ projectName: 'test-project', persona: 'test persona' });
         const result = await initCommand();
-        expect(result.toolset).toEqual([]);
+        expect(result).toBeDefined();
+        expect(result?.toolset).toEqual([]);
     });
 });
