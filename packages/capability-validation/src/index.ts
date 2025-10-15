@@ -19,6 +19,7 @@ import { ValidationCaseDAO, CaseExecutionDAO, CaseVersionDAO } from './database/
 import { initializeCaseDatabase } from './database/schema.js';
 import { CategoryManager } from './category-manager.js';
 import { ExecutionEngine, ToolAdapter } from './execution-engine.js';
+import { ResultEvaluator } from './result-evaluator.js';
 
 /**
  * 测试案例类别枚举（10个核心能力类别）
@@ -337,6 +338,7 @@ export class CaseManager {
   private versionDAO: CaseVersionDAO;
   public readonly categoryManager: CategoryManager;
   public readonly executionEngine: ExecutionEngine;
+  public readonly resultEvaluator: ResultEvaluator;
 
   constructor(dbPath: string = ':memory:') {
     this.db = new Database(dbPath);
@@ -346,6 +348,7 @@ export class CaseManager {
     this.versionDAO = new CaseVersionDAO(this.db);
     this.categoryManager = new CategoryManager(this.db);
     this.executionEngine = new ExecutionEngine(this.db);
+    this.resultEvaluator = new ResultEvaluator();
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
@@ -565,18 +568,19 @@ export class CaseExecutor {
 }
 
 /**
- * 结果评估器（占位）
+ * 结果评估器（已集成到CaseManager）
+ * @deprecated 使用 CaseManager.resultEvaluator 替代
  */
 export class ResultEvaluator {
   constructor() {
-    console.log('ResultEvaluator 初始化 - 功能开发中');
+    console.warn('ResultEvaluator 已废弃，请使用 CaseManager.resultEvaluator');
   }
 
   async evaluateResult(
     validationCase: ValidationCase, 
     output: string
   ): Promise<CaseExecution['scores']> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    throw new Error('请使用 CaseManager.resultEvaluator.evaluateResult()');
   }
 
   async compareResults(executions: CaseExecution[]): Promise<{
@@ -588,7 +592,7 @@ export class ResultEvaluator {
     }>;
     insights: string[];
   }> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    throw new Error('请使用 CaseManager.resultEvaluator.compareResults()');
   }
 }
 
@@ -627,13 +631,15 @@ export { CategoryManager } from './category-manager.js';
 export type { CategoryInfo, DifficultyInfo, CategoryStats, DifficultyStats } from './category-manager.js';
 export { ExecutionEngine, MockToolAdapter, GenericToolAdapter } from './execution-engine.js';
 export type { ExecutionParams, BatchExecutionParams, ExecutionContext, ToolAdapter } from './execution-engine.js';
+export { ResultEvaluator as ResultEvaluatorImpl } from './result-evaluator.js';
+export type { EvaluationScores, EvaluationAnalysis, EvaluationStrategy } from './result-evaluator.js';
 
 export default {
   CaseManager,
   CategoryManager,
   ExecutionEngine,
-  CaseExecutor,
   ResultEvaluator,
+  CaseExecutor,
   CommunityService,
   CaseCategory,
   DifficultyLevel
