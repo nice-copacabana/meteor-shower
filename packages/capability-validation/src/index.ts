@@ -13,6 +13,11 @@
  * 详细设计：参见 ../../CAPABILITY_VALIDATION_MODULE_DESIGN.md
  */
 
+import Database from 'better-sqlite3';
+import { nanoid } from 'nanoid';
+import { ValidationCaseDAO, CaseExecutionDAO } from './database/dao.js';
+import { initializeCaseDatabase } from './database/schema.js';
+
 /**
  * 测试案例类别枚举
  */
@@ -149,15 +154,54 @@ export interface CaseExecution {
 }
 
 /**
- * 案例管理器（占位）
+ * 案例管理器
  */
 export class CaseManager {
-  constructor() {
-    console.log('CaseManager 初始化 - 功能开发中');
+  private db: Database.Database;
+  private caseDAO: ValidationCaseDAO;
+  private executionDAO: CaseExecutionDAO;
+
+  constructor(dbPath: string = ':memory:') {
+    this.db = new Database(dbPath);
+    initializeCaseDatabase(this.db);
+    this.caseDAO = new ValidationCaseDAO(this.db);
+    this.executionDAO = new CaseExecutionDAO(this.db);
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    const id = caseData.id || nanoid();
+    
+    const validationCase: Omit<ValidationCase, 'createdAt' | 'updatedAt' | 'stats'> = {
+      id,
+      title: caseData.title || '',
+      description: caseData.description || '',
+      category: caseData.category || CaseCategory.CUSTOM,
+      difficulty: caseData.difficulty || DifficultyLevel.INTERMEDIATE,
+      tags: caseData.tags || [],
+      scenario: caseData.scenario || {
+        context: '',
+        task: '',
+        input: '',
+      },
+      expected: caseData.expected || {
+        type: 'criteria',
+        criteria: [],
+      },
+      scoring: caseData.scoring || {
+        accuracy: 25,
+        completeness: 25,
+        creativity: 25,
+        efficiency: 25,
+      },
+      author: caseData.author || {
+        name: 'Anonymous',
+      },
+      version: caseData.version || '1.0.0',
+      isPublic: caseData.isPublic !== undefined ? caseData.isPublic : true,
+      isCertified: caseData.isCertified || false,
+    };
+
+    return this.caseDAO.create(validationCase);
   }
 
   async getCases(filter?: {
@@ -166,19 +210,50 @@ export class CaseManager {
     tags?: string[];
     author?: string;
   }): Promise<ValidationCase[]> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    return this.caseDAO.find({
+      category: filter?.category,
+      difficulty: filter?.difficulty,
+      author: filter?.author,
+    });
   }
 
   async getCaseById(caseId: string): Promise<ValidationCase | null> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    return this.caseDAO.findById(caseId);
   }
 
   async updateCase(caseId: string, updates: Partial<ValidationCase>): Promise<ValidationCase> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    const success = this.caseDAO.update(caseId, updates);
+    if (!success) {
+      throw new Error(`案例 ${caseId} 不存在或更新失败`);
+    }
+    
+    const updated = this.caseDAO.findById(caseId);
+    if (!updated) {
+      throw new Error(`更新后无法找到案例 ${caseId}`);
+    }
+    
+    return updated;
   }
 
   async deleteCase(caseId: string): Promise<void> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    const success = this.caseDAO.delete(caseId);
+    if (!success) {
+      throw new Error(`案例 ${caseId} 不存在`);
+    }
+  }
+  
+  /**
+   * 获取案例执行记录
+   */
+  async getCaseExecutions(caseId: string): Promise<CaseExecution[]> {
+    return this.executionDAO.findByCaseId(caseId);
+  }
+  
+  /**
+   * 关闭数据库
+   */
+  close(): void {
+    this.db.close();
   }
 }
 
