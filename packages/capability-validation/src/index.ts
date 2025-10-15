@@ -18,6 +18,7 @@ import { nanoid } from 'nanoid';
 import { ValidationCaseDAO, CaseExecutionDAO, CaseVersionDAO } from './database/dao.js';
 import { initializeCaseDatabase } from './database/schema.js';
 import { CategoryManager } from './category-manager.js';
+import { ExecutionEngine, ToolAdapter } from './execution-engine.js';
 
 /**
  * 测试案例类别枚举（10个核心能力类别）
@@ -335,6 +336,7 @@ export class CaseManager {
   private executionDAO: CaseExecutionDAO;
   private versionDAO: CaseVersionDAO;
   public readonly categoryManager: CategoryManager;
+  public readonly executionEngine: ExecutionEngine;
 
   constructor(dbPath: string = ':memory:') {
     this.db = new Database(dbPath);
@@ -343,6 +345,7 @@ export class CaseManager {
     this.executionDAO = new CaseExecutionDAO(this.db);
     this.versionDAO = new CaseVersionDAO(this.db);
     this.categoryManager = new CategoryManager(this.db);
+    this.executionEngine = new ExecutionEngine(this.db);
   }
 
   async createCase(caseData: Partial<ValidationCase>): Promise<ValidationCase> {
@@ -423,6 +426,13 @@ export class CaseManager {
     if (!success) {
       throw new Error(`案例 ${caseId} 不存在`);
     }
+  }
+  
+  /**
+   * 注册工具适配器
+   */
+  registerToolAdapter(adapter: ToolAdapter): void {
+    this.executionEngine.registerAdapter(adapter);
   }
   
   /**
@@ -530,11 +540,12 @@ export class CaseManager {
 }
 
 /**
- * 案例执行器（占位）
+ * 案例执行器（已集成到CaseManager）
+ * @deprecated 使用 CaseManager.executionEngine 替代
  */
 export class CaseExecutor {
   constructor() {
-    console.log('CaseExecutor 初始化 - 功能开发中');
+    console.warn('CaseExecutor 已废弃，请使用 CaseManager.executionEngine');
   }
 
   async executeCase(
@@ -542,14 +553,14 @@ export class CaseExecutor {
     tool: string, 
     config?: Record<string, any>
   ): Promise<CaseExecution> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    throw new Error('请使用 CaseManager.executionEngine.executeCase()');
   }
 
   async batchExecute(
     caseIds: string[], 
     tools: string[]
   ): Promise<CaseExecution[]> {
-    throw new Error('功能开发中 - 请关注 M6 阶段更新');
+    throw new Error('请使用 CaseManager.executionEngine.batchExecute()');
   }
 }
 
@@ -614,10 +625,13 @@ export class CommunityService {
 // 导出所有公共 API
 export { CategoryManager } from './category-manager.js';
 export type { CategoryInfo, DifficultyInfo, CategoryStats, DifficultyStats } from './category-manager.js';
+export { ExecutionEngine, MockToolAdapter, GenericToolAdapter } from './execution-engine.js';
+export type { ExecutionParams, BatchExecutionParams, ExecutionContext, ToolAdapter } from './execution-engine.js';
 
 export default {
   CaseManager,
   CategoryManager,
+  ExecutionEngine,
   CaseExecutor,
   ResultEvaluator,
   CommunityService,
