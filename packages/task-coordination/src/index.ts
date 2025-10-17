@@ -16,6 +16,12 @@
 // 导出状态引擎
 export * from './state-engine.js';
 
+// 导出任务协调器
+export * from './task-coordinator.js';
+
+// 导出数据库模型
+export * from './database/models.js';
+
 /**
  * 任务状态枚举
  */

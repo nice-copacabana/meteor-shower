@@ -19,6 +19,7 @@ import { shareCommand } from './commands/share.js';    // 模板分享命令
 import { mcpTestCommand } from './commands/mcp.js';     // MCP服务测试命令
 import { accountCommand } from './commands/account.js'; // 账户管理命令
 import { createCaseCommand } from './commands/case.js';  // 案例管理命令
+import { createTaskCommand } from './commands/task.js';  // 任务管理命令
 
 // 创建命令行程序实例
 const program = new Command();
@@ -149,5 +150,18 @@ program
  * - stats: 统计信息
  */
 program.addCommand(createCaseCommand());
+
+/**
+ * 任务管理命令：任务协调管理
+ * 功能：
+ * - create: 创建新任务
+ * - list: 列出任务
+ * - show: 显示任务详情
+ * - submit: 提交任务
+ * - cancel: 取消任务
+ * - add-dep: 添加依赖
+ * - deps: 查看依赖
+ */
+program.addCommand(createTaskCommand());
 
 program.parseAsync(process.argv);
